@@ -1,0 +1,53 @@
+AI_Powered_Tools/
+├── frontend/
+│   ├── README.md
+│   ├── components.json
+│   ├── eslint.config.mjs
+│   ├── next-env.d.ts
+│   ├── next.config.ts
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── pnpm-lock.yaml
+│   ├── postcss.config.cjs
+│   ├── public/
+│   │   ├── file.svg
+│   │   ├── globe.svg
+│   │   ├── next.svg
+│   │   ├── vercel.svg
+│   │   ├── window.svg
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── about/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── blog/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── contact/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── favicon.ico
+│   │   │   ├── globals.css
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── product/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── tools/
+│   │   │   │   ├── context-cards/
+│   │   │   │   │   ├── page.tsx
+│   │   ├── components/
+│   │   │   ├── CustomCard.tsx
+│   │   │   ├── ToolCard.tsx
+│   │   │   ├── layout/
+│   │   │   │   ├── Footer.tsx
+│   │   │   │   ├── Header.tsx
+│   │   │   ├── toolwiz/
+│   │   │   │   ├── ContextCards.tsx
+│   │   │   ├── ui/
+│   │   │   │   ├── button.tsx
+│   │   │   │   ├── card.tsx
+│   │   ├── data/
+│   │   │   ├── sections.ts
+│   │   ├── lib/
+│   │   │   ├── gemini.tsx
+│   │   │   ├── utils.ts
+│   ├── tailwind.config.ts
+│   ├── tsconfig.json
+├── tree.py
