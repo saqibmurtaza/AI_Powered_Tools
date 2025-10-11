@@ -3,6 +3,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, PlusCircle, Download, Trash2, Edit3, Tag } from 'lucide-react';
+import { useGlobalContext } from '@/context/GlobalContextCaptureProvider';
+
+
 
 // ContextCards
 // A compact, production-ready React component (single-file) implementing a
@@ -34,6 +37,27 @@ export default function ContextCards({ initial = [], onChange }: Props) {
     initial.forEach((c) => map.set(c.id, c));
     return Array.from(map.values());
   });
+
+  // const { triggerAddToContext } = useGlobalContextCapture();
+  const { triggerAddToContext } = useGlobalContext();
+
+  
+
+  // Register handler so tooltip "Add" adds a new Context Card
+  useEffect(() => {
+    triggerAddToContext((text: string) => {
+      const newCard = {
+        id: Date.now().toString(),
+        title: 'Captured Highlight',
+        description: text,
+        tags: ['highlight'],
+        createdAt: new Date().toISOString(),
+      };
+      const updated = [newCard, ...cards];
+      setCards(updated);
+      localStorage.setItem('context-cards', JSON.stringify(updated));
+    });
+  }, [cards, triggerAddToContext]);
 
   // load from localStorage on mount
 useEffect(() => {
