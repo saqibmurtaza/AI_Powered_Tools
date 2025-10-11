@@ -3,25 +3,18 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, PlusCircle, Download, Trash2, Edit3, Tag } from 'lucide-react';
-import { useGlobalContext } from '@/context/GlobalContextCaptureProvider';
-
-
 
 // ContextCards
-// A compact, production-ready React component (single-file) implementing a
-// "Context Cards" tool suited for a tech-savvy product UI.
-// - TailwindCSS utility classes for styling
-// - Framer Motion for smooth micro-interactions
-// - lucide-react for crisp icons
-// - Features: add/edit/delete cards, search/filter by tag, drag handle (visual),
-//   export/import JSON, keyboard accessible controls
+// A compact, production-ready React component implementing
+// "Context Cards" — with smooth animations, Tailwind styling,
+// JSON import/export, and localStorage persistence.
 
 export type ContextCard = {
   id: string;
   title: string;
   description?: string;
   tags?: string[];
-  color?: string; // tailwind hue or custom
+  color?: string;
   createdAt: string;
 };
 
@@ -32,62 +25,38 @@ type Props = {
 
 export default function ContextCards({ initial = [], onChange }: Props) {
   const [cards, setCards] = useState<ContextCard[]>(() => {
-    // dedupe incoming
     const map = new Map<string, ContextCard>();
     initial.forEach((c) => map.set(c.id, c));
     return Array.from(map.values());
   });
 
-  // const { triggerAddToContext } = useGlobalContextCapture();
-  const { triggerAddToContext } = useGlobalContext();
-
-  
-
-  // Register handler so tooltip "Add" adds a new Context Card
+  // Load from localStorage on mount
   useEffect(() => {
-    triggerAddToContext((text: string) => {
-      const newCard = {
-        id: Date.now().toString(),
-        title: 'Captured Highlight',
-        description: text,
-        tags: ['highlight'],
-        createdAt: new Date().toISOString(),
-      };
-      const updated = [newCard, ...cards];
-      setCards(updated);
-      localStorage.setItem('context-cards', JSON.stringify(updated));
-    });
-  }, [cards, triggerAddToContext]);
-
-  // load from localStorage on mount
-useEffect(() => {
-  try {
-    const saved = localStorage.getItem('context-cards');
-    if (saved) {
-      setCards(JSON.parse(saved) as ContextCard[]);
+    try {
+      const saved = localStorage.getItem('context-cards');
+      if (saved) {
+        setCards(JSON.parse(saved) as ContextCard[]);
+      }
+    } catch (err) {
+      console.warn('Failed to load context-cards from localStorage', err);
     }
-  } catch (err) {
-    // fail safe — don't block the UI
-    console.warn('Failed to load context-cards from localStorage', err);
-  }
-}, []);
+  }, []);
 
-// persist to localStorage whenever cards change
-useEffect(() => {
-  try {
-    localStorage.setItem('context-cards', JSON.stringify(cards));
-  } catch (err) {
-    console.warn('Failed to save context-cards to localStorage', err);
-  }
-}, [cards]);
+  // Persist to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('context-cards', JSON.stringify(cards));
+    } catch (err) {
+      console.warn('Failed to save context-cards to localStorage', err);
+    }
+  }, [cards]);
 
   const [query, setQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [editing, setEditing] = useState<ContextCard | null>(null);
   const [showEditor, setShowEditor] = useState(false);
-  
 
-  // derived tags
+  // Derived tags
   const tags = useMemo(() => {
     const s = new Set<string>();
     cards.forEach((c) => (c.tags || []).forEach((t) => s.add(t)));
@@ -151,12 +120,10 @@ useEffect(() => {
     reader.onload = () => {
       try {
         const parsed = JSON.parse(String(reader.result || '[]')) as ContextCard[];
-        // merge but prefer incoming
         const byId = new Map(cards.map((c) => [c.id, c]));
         parsed.forEach((p) => byId.set(p.id, p));
         pushAndNotify(Array.from(byId.values()));
       } catch (e) {
-        // eslint-disable-next-line no-console
         console.error('Invalid JSON import', e);
         alert('Failed to import — invalid JSON');
       }
@@ -164,7 +131,7 @@ useEffect(() => {
     reader.readAsText(file);
   }
 
-  // Small Editor inner component
+  // Inline Editor
   function Editor({ card }: { card?: ContextCard | null }) {
     const isNew = !card;
     const [title, setTitle] = useState(card?.title || '');
@@ -245,10 +212,11 @@ useEffect(() => {
     );
   }
 
+  // 🩵 Main Layout
   return (
     <div className="p-4 max-w-6xl mx-auto">
       <div className="flex items-center justify-between gap-4 mb-6">
-        <h2 className="text-2xl font-extrabold">Context Cards</h2>
+        <h2 className="text-3xl font-extrabold">ToolWiz — Context Cards</h2>
 
         <div className="flex items-center gap-2">
           <label className="relative flex items-center gap-2 bg-white/6 rounded-full px-3 py-1">
@@ -303,10 +271,12 @@ useEffect(() => {
           <Tag className="w-4 h-4 opacity-80" />
           <span className="text-sm opacity-80">Tags</span>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <button
             onClick={() => setSelectedTag(null)}
-            className={`px-3 py-1 rounded-full border ${selectedTag === null ? 'bg-white/8' : 'bg-transparent'}`}
+            className={`px-3 py-1 rounded-full border ${
+              selectedTag === null ? 'bg-white/8' : 'bg-transparent'
+            }`}
           >
             All
           </button>
@@ -314,7 +284,9 @@ useEffect(() => {
             <button
               key={t}
               onClick={() => setSelectedTag((s) => (s === t ? null : t))}
-              className={`px-3 py-1 rounded-full border ${selectedTag === t ? 'bg-white/8' : 'bg-transparent'}`}
+              className={`px-3 py-1 rounded-full border ${
+                selectedTag === t ? 'bg-white/8' : 'bg-transparent'
+              }`}
             >
               {t}
             </button>
@@ -322,18 +294,7 @@ useEffect(() => {
         </div>
       </div>
 
-      <AnimatePresence>
-        {showEditor && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="mb-4"
-          >
-            <Editor card={editing} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <AnimatePresence>{showEditor && <Editor card={editing} />}</AnimatePresence>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map((c) => (
@@ -343,18 +304,29 @@ useEffect(() => {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
-            className={`rounded-2xl p-4 shadow-md border ${c.color} bg-opacity-10 backdrop-blur`}>
+            className={`rounded-2xl p-4 shadow-md border ${c.color} bg-opacity-10 backdrop-blur`}
+          >
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-2">
-                    <div className="rounded-full w-10 h-10 flex items-center justify-center bg-white/12">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2v20M2 12h20" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg font-semibold">{c.title}</h3>
+                  <div className="rounded-full w-10 h-10 flex items-center justify-center bg-white/12">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12 2v20M2 12h20"
+                        stroke="white"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                   </div>
+                  <h3 className="text-lg font-semibold">{c.title}</h3>
                 </div>
 
                 <p className="mt-2 text-sm opacity-80 line-clamp-3">{c.description}</p>
@@ -367,32 +339,32 @@ useEffect(() => {
                   ))}
                 </div>
 
-                <div className="mt-3 text-xs opacity-60">Created: {new Date(c.createdAt).toLocaleString()}</div>
+                <div className="mt-3 text-xs opacity-60">
+                  Created: {new Date(c.createdAt).toLocaleString()}
+                </div>
               </div>
 
               <div className="flex flex-col items-end gap-2">
-                <div className="flex flex-col gap-2">
-                  <button
-                    title="Edit"
-                    onClick={() => {
-                      setEditing(c);
-                      setShowEditor(true);
-                    }}
-                    className="p-2 rounded-lg border bg-white/4"
-                  >
-                    <Edit3 className="w-4 h-4" />
-                  </button>
+                <button
+                  title="Edit"
+                  onClick={() => {
+                    setEditing(c);
+                    setShowEditor(true);
+                  }}
+                  className="p-2 rounded-lg border bg-white/4"
+                >
+                  <Edit3 className="w-4 h-4" />
+                </button>
 
-                  <button
-                    title="Delete"
-                    onClick={() => {
-                      if (confirm('Delete this card?')) removeCard(c.id);
-                    }}
-                    className="p-2 rounded-lg border bg-white/4"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
+                <button
+                  title="Delete"
+                  onClick={() => {
+                    if (confirm('Delete this card?')) removeCard(c.id);
+                  }}
+                  className="p-2 rounded-lg border bg-white/4"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             </div>
           </motion.article>
@@ -400,10 +372,14 @@ useEffect(() => {
       </div>
 
       {filtered.length === 0 && (
-        <div className="mt-8 text-center opacity-80">No context cards match your search — create one to get started.</div>
+        <div className="mt-8 text-center opacity-80">
+          No context cards match your search — create one to get started.
+        </div>
       )}
 
-      <div className="mt-6 text-right text-sm opacity-70">Tech-savvy, extendable, and ready to integrate.</div>
+      <div className="mt-6 text-right text-sm opacity-70">
+        Tech-savvy, extendable, and ready to integrate.
+      </div>
     </div>
   );
 }
