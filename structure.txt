@@ -30,21 +30,27 @@ AI_Powered_Tools/
 │   │   │   ├── product/
 │   │   │   │   ├── page.tsx
 │   │   │   ├── tools/
-│   │   │   │   ├── context-cards/
+│   │   │   │   ├── contextcards/
 │   │   │   │   │   ├── page.tsx
 │   │   ├── components/
-│   │   │   ├── CustomCard.tsx
 │   │   │   ├── ToolCard.tsx
 │   │   │   ├── layout/
 │   │   │   │   ├── Footer.tsx
 │   │   │   │   ├── Header.tsx
 │   │   │   ├── toolwiz/
 │   │   │   │   ├── ContextCards.tsx
+│   │   │   │   ├── SelectionToContext.tsx
 │   │   │   ├── ui/
+│   │   │   │   ├── badge.tsx
 │   │   │   │   ├── button.tsx
 │   │   │   │   ├── card.tsx
+│   │   │   │   ├── input.tsx
+│   │   ├── context/
+│   │   │   ├── GlobalContextCaptureProvider.tsx
 │   │   ├── data/
 │   │   │   ├── sections.ts
+│   │   ├── hooks/
+│   │   │   ├── useTextSelection.ts
 │   │   ├── lib/
 │   │   │   ├── gemini.tsx
 │   │   │   ├── utils.ts

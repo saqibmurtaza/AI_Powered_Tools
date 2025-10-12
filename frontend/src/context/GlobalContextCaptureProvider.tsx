@@ -3,7 +3,9 @@ import React, { createContext, useState, useCallback, useContext, ReactNode } fr
 
 type GlobalContextType = {
   selection: string | null;
+  selectionPosition: { x: number; y: number } | null;
   saveSelection: (text: string) => void;
+  addToContextHandler: ((text: string) => void) | null;
   triggerAddToContext: (handler: (text: string) => void) => void;
 };
 
@@ -17,21 +19,35 @@ export const useGlobalContext = () => {
 
 export function GlobalContextProvider({ children }: { children: ReactNode }) {
   const [selection, setSelection] = useState<string | null>(null);
+  const [selectionPosition, setSelectionPosition] = useState<{ x: number; y: number } | null>(null);
   const [addToContextHandler, setAddToContextHandler] = useState<((text: string) => void) | null>(null);
 
   const saveSelection = useCallback((text: string) => {
     setSelection(text);
-    if (addToContextHandler) {
-      addToContextHandler(text);
+    const sel = window.getSelection();
+    const range = sel?.getRangeAt(0);
+    const rect = range?.getBoundingClientRect();
+    if (rect) {
+      setSelectionPosition({ x: rect.left + window.scrollX, y: rect.top + window.scrollY - 40 });
+    } else {
+      setSelectionPosition(null);
     }
-  }, [addToContextHandler]);
+  }, []);
 
   const triggerAddToContext = useCallback((handler: (text: string) => void) => {
     setAddToContextHandler(() => handler);
   }, []);
 
   return (
-    <GlobalContext.Provider value={{ selection, saveSelection, triggerAddToContext }}>
+    <GlobalContext.Provider
+      value={{
+        selection,
+        selectionPosition,
+        saveSelection,
+        addToContextHandler,
+        triggerAddToContext,
+      }}
+    >
       {children}
     </GlobalContext.Provider>
   );
