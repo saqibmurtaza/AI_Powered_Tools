@@ -113,7 +113,7 @@ export default function SelectionToContext({
       onAdd(text);
     } catch (e) {
       // swallow errors from consumer
-      // eslint-disable-next-line no-console
+     
       console.error('SelectionToContext onAdd threw', e);
     }
     // clear selection and hide

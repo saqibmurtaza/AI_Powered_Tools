@@ -2,10 +2,7 @@
 
 import SelectionToContext from '@/components/toolwiz/SelectionToContext';
 import React, { useEffect, useMemo, useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Upload, Download, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -16,6 +13,9 @@ type ContextCard = {
   tags: string[];
   createdAt?: string;
 };
+
+// 1. Defined a specific type for the payload to upsert a card
+type UpsertPayload = Omit<ContextCard, "id" | "createdAt"> & { id?: string };
 
 export default function ContextCardsPage() {
   // --- state (no localStorage reads during SSR) ---
@@ -68,14 +68,19 @@ export default function ContextCardsPage() {
   }, [cards, search, selectedTag]);
 
   // CRUD helpers
-  function upsertCard(payload: Omit<ContextCard, "id" | "createdAt"> & { id?: string }) {
+  // 2. Used the defined UpsertPayload type instead of Omit<ContextCard, ...>
+  function upsertCard(payload: UpsertPayload) {
     if (payload.id) {
       // update existing
+      // 3. Cast the combined object back to ContextCard to satisfy the setCards state type
       setCards((s) => s.map((c) => (c.id === payload.id ? { ...c, ...payload } as ContextCard : c)));
     } else {
       // create new
       const newCard: ContextCard = {
-        id: typeof crypto !== "undefined" && (crypto as any).randomUUID ? (crypto as any).randomUUID() : Date.now().toString(),
+        // 4. Fixed 'any' usage: use 'window.crypto' and cast 'crypto' to 'Crypto' (or a type with randomUUID) if randomUUID is preferred.
+        // For simplicity and to fix the 'any' error, we use the preferred safe path (Date.now()) or assume 'crypto' exists on 'window'.
+        // The original code was likely trying to use the modern 'crypto.randomUUID()'.
+        id: (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : Date.now().toString(),
         createdAt: new Date().toISOString(),
         title: payload.title,
         description: payload.description,
@@ -126,6 +131,7 @@ export default function ContextCardsPage() {
   }
 
   // Editor open for edit
+  // 5. This function is now used inside the JSX to fix the 'never used' warning
   function openEditCardEditor(card: ContextCard) {
     setEditingCard(card);
     setShowEditor(true);
@@ -210,33 +216,21 @@ export default function ContextCardsPage() {
   // --- UI ---
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 text-white py-12">
+      {/* 6. Removed duplicate SelectionToContext component */}
       <SelectionToContext
-  onAdd={(selectedText) => {
-    // open the existing editor modal and prefill values
-    setEditingCard({
-      id: '', // new card (no id) indicates new in upsert flow
-      title: 'Captured Highlight',
-      description: selectedText,
-      tags: ['highlight'],
-      createdAt: new Date().toISOString(),
-    });
-    setShowEditor(true);
-  }}
-/>
+        onAdd={(selectedText) => {
+          // open the existing editor modal and prefill values
+          setEditingCard({
+            id: '', // new card (no id) indicates new in upsert flow
+            title: 'Captured Highlight',
+            description: selectedText,
+            tags: ['highlight'],
+            createdAt: new Date().toISOString(),
+          } as ContextCard); // Added cast to ensure correct type for setEditingCard
+          setShowEditor(true);
+        }}
+      />
       <div className="max-w-7xl mx-auto px-6">
-        <SelectionToContext
-  onAdd={(selectedText) => {
-    // open the existing editor modal and prefill values
-    setEditingCard({
-      id: '', // new card (no id) indicates new in upsert flow
-      title: 'Captured Highlight',
-      description: selectedText,
-      tags: ['highlight'],
-      createdAt: new Date().toISOString(),
-    });
-    setShowEditor(true);
-  }}
-/>
         <h1 className="text-4xl md:text-5xl font-extrabold mb-6 bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
           ToolWiz — Context Cards
         </h1>
@@ -358,8 +352,8 @@ export default function ContextCardsPage() {
                   <button
                     title="Edit"
                     onClick={() => {
-                      setEditingCard(c);
-                      setShowEditor(true);
+                      // Call the function directly to make it "used"
+                      openEditCardEditor(c); 
                     }}
                     className="p-2 rounded-lg border bg-white/4 text-white"
                   >
@@ -411,8 +405,6 @@ export default function ContextCardsPage() {
 
   // small wrappers to call existing functions from within JSX
   function exportJSONButton() { exportJSON(); }
-  function exportJSONInner() { exportJSON(); }
-
-  // adaptors to avoid naming collisions used above
-  function importJSONInner(file: File | null) { importJSON(file); }
+  
+  // 7. Removed the unused exportJSONInner and importJSONInner wrappers
 }

@@ -8,12 +8,10 @@ import Footer from "@/components/layout/Footer";
 import { siteData } from "@/data/sections";
 import {
   Card,
-  CardHeader,
   CardTitle,
   CardContent,
   CardDescription,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 /**
  * ✅ Restored version — original layout, animations, and design.

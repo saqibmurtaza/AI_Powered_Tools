@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "CardContext",
+  "version": "0.1.0",
+  "description": "Capture text selections to your context cards",
+  "permissions": ["activeTab", "storage"],
+  "background": {
+    "service_worker": "dist/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["dist/contentScript.js"]
+    }
+  ]
+ 
+}

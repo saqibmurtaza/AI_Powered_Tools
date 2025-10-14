@@ -1,4 +1,5 @@
-// Define constants for styling and API access
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export const ACCENT_COLOR_CLASS = 'bg-[#7C3AED]';
 export const ACCENT_TEXT_COLOR_CLASS = 'text-[#7C3AED]';
 export const TEXT_COLOR_CLASS = 'text-gray-900';
@@ -7,62 +8,85 @@ export const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/
 export const API_KEY = ""; // Placeholder for Canvas runtime environment
 
 // --- INLINE ICON DEFINITIONS ---
-import React from 'react';
+import React, { SVGProps } from 'react';
 
-const IconBase = ({ size = 24, color = "currentColor", strokeWidth = "2", children, ...props }: any) => (
+// Define a specific interface for icon props, extending standard SVG props
+interface IconProps extends SVGProps<SVGSVGElement> {
+    size?: string | number;
+    color?: string;
+    strokeWidth?: string | number;
+    // Allowing other standard SVG attributes through SVGProps<SVGSVGElement>
+}
+
+// Icon Base component using IconProps for type safety
+const IconBase = ({ size = 24, color = "currentColor", strokeWidth = "2", children, ...props }: IconProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}>
         {children}
     </svg>
 );
 
-// Define the component internally
-const BotIconComponent = (props: any) => (
+// Define components using IconProps for type safety
+const BotIconComponent = (props: IconProps) => (
     <IconBase {...props}><path d="M12 8V4H8"/><path d="M12 14V8"/><path d="M19 12V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6c0 1.1.9 2 2 2h3"/><path d="M12 2v2"/><path d="M21 17a2 2 0 0 0 0-4H3a2 2 0 0 0 0 4v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"/></IconBase>
 );
-export const ZapIcon = (props: any) => (
+export const ZapIcon = (props: IconProps) => (
     <IconBase {...props}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></IconBase>
 );
-export const GlobeIcon = (props: any) => (
+export const GlobeIcon = (props: IconProps) => (
     <IconBase {...props}><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></IconBase>
 );
-export const MessageSquareIcon = (props: any) => (
+export const MessageSquareIcon = (props: IconProps) => (
     <IconBase {...props}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></IconBase>
 );
-export const BriefcaseIcon = (props: any) => (
+export const BriefcaseIcon = (props: IconProps) => (
     <IconBase {...props}><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></IconBase>
 );
-export const UsersIcon = (props: any) => (
+export const UsersIcon = (props: IconProps) => (
     <IconBase {...props}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></IconBase>
 );
-export const FileTextIcon = (props: any) => (
+export const FileTextIcon = (props: IconProps) => (
     <IconBase {...props}><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v5h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></IconBase>
 );
-export const MenuIcon = (props: any) => (
+export const MenuIcon = (props: IconProps) => (
     <IconBase {...props}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></IconBase>
 );
-export const XIcon = (props: any) => (
+export const XIcon = (props: IconProps) => (
     <IconBase {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></IconBase>
 );
-export const ArrowRightIcon = (props: any) => (
+export const ArrowRightIcon = (props: IconProps) => (
     <IconBase {...props}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></IconBase>
 );
-export const BookOpenIcon = (props: any) => (
+export const BookOpenIcon = (props: IconProps) => (
     <IconBase {...props}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></IconBase>
 );
-export const LoaderIcon = (props: any) => (
+export const LoaderIcon = (props: IconProps) => (
     <IconBase {...props}><path d="M12 2v4"/><path d="m16.2 7.8 2.5-2.5"/><path d="M22 12h-4"/><path d="m16.2 16.2 2.5 2.5"/><path d="M12 22v-4"/><path d="m7.8 16.2-2.5 2.5"/><path d="M2 12h4"/><path d="m7.8 7.8-2.5-2.5"/></IconBase>
 );
 
-// --- GEMINI API FUNCTION (Fixes Type 2339 errors) ---
+// --- GEMINI API FUNCTION (Type Definitions) ---
 
-interface GeminiPayload {
-    contents: { parts: { text: string }[] }[];
-    // Explicitly marking optional fields to resolve Type 2339 errors
-    systemInstruction?: { parts: { text: string }[] };
-    tools?: any;
+// Define a structured part/content type for the Gemini API call
+interface Part {
+    text: string;
+}
+interface Content {
+    parts: Part[];
+}
+// Placeholder for the external Tools structure, using 'any[]' for the array content 
+// as the specific tool declaration structure is external (like FunctionDeclaration)
+type Tool = {
+    // This part is often complex; using any[] is a common practice here for flexibility.
+    tools: any[]; 
 }
 
-export const callGeminiApi = async (prompt: string, systemInstruction: string | null = null, tools: any | null = null) => {
+interface GeminiPayload {
+    contents: Content[];
+    systemInstruction?: Content;
+    tools?: Tool;
+}
+
+// Update function parameters with specific types
+export const callGeminiApi = async (prompt: string, systemInstruction: string | null = null, tools: Tool | null = null) => {
     const maxRetries = 3;
     let delay = 1000;
 
@@ -71,6 +95,7 @@ export const callGeminiApi = async (prompt: string, systemInstruction: string | 
     };
 
     if (systemInstruction) {
+        // Build the systemInstruction content correctly
         payload.systemInstruction = { parts: [{ text: systemInstruction }] };
     }
     if (tools) {
@@ -86,10 +111,15 @@ export const callGeminiApi = async (prompt: string, systemInstruction: string | 
             });
 
             if (!response.ok) {
+                // Check for rate limit error (429) or other retryable errors
+                if (response.status === 429 && i < maxRetries - 1) {
+                    throw new Error(`Rate limit exceeded (429). Retrying...`);
+                }
                 throw new Error(`API call failed with status: ${response.status}`);
             }
 
             const result = await response.json();
+            // Safely retrieve the generated text from the complex response structure
             const text = result.candidates?.[0]?.content?.parts?.[0]?.text || 'Error: Could not retrieve content.';
             
             return { text };
@@ -109,14 +139,16 @@ export const callGeminiApi = async (prompt: string, systemInstruction: string | 
 
 // --- convenience aliases so imports like `Zap`, `Globe` work ----------------
 export {
-  ZapIcon as Zap,
-  GlobeIcon as Globe,
-  UsersIcon as Users,
-  LoaderIcon as Loader,
-  ArrowRightIcon as ArrowRight,
-  FileTextIcon as FileText,
-  BriefcaseIcon as Briefcase,
-  MessageSquareIcon as MessageSquare,
-  // export the internal BotIconComponent under the public name BotIcon
-  BotIconComponent as BotIcon,
+    ZapIcon as Zap,
+    GlobeIcon as Globe,
+    UsersIcon as Users,
+    LoaderIcon as Loader,
+    ArrowRightIcon as ArrowRight,
+    FileTextIcon as FileText,
+    BriefcaseIcon as Briefcase,
+    MessageSquareIcon as MessageSquare,
+    // export the internal BotIconComponent under the public name BotIcon
+    BotIconComponent as BotIcon,
 };
+
+

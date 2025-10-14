@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomCard from '../../components/CustomCard';
+
 import {
     FileTextIcon, MessageSquareIcon, BriefcaseIcon,
     ACCENT_COLOR_CLASS, ACCENT_TEXT_COLOR_CLASS, TEXT_COLOR_CLASS
@@ -20,21 +20,9 @@ const ContextCardsPage: React.FC = () => (
 
             {/* Product Features Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <CustomCard
-                    icon={FileTextIcon}
-                    title="Instant Contextualization"
-                    description="AI automatically identifies and tags key concepts, turning raw data into organized, searchable knowledge cards."
-                />
-                <CustomCard
-                    icon={MessageSquareIcon}
-                    title="Agentic Retrieval"
-                    description="Ask questions in natural language, and the system intelligently surfaces the most relevant cards and summaries."
-                />
-                <CustomCard
-                    icon={BriefcaseIcon}
-                    title="Workflow Sync"
-                    description="Seamlessly integrate ContextCards with your daily tools, turning passive knowledge into active, actionable intelligence."
-                />
+             
+            
+                
                 <div className="md:col-span-2 lg:col-span-3">
                     <div className={`p-8 ${ACCENT_COLOR_CLASS} rounded-2xl text-white`}>
                         <h3 className="text-2xl font-bold mb-2">Ready to Try ContextCards?</h3>
