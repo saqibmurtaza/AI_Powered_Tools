@@ -1,4 +1,22 @@
 AI_Powered_Tools/
+├── extension/
+│   ├── dist/
+│   │   ├── background.js
+│   │   ├── background.js.map
+│   │   ├── contentScript.js
+│   │   ├── contentScript.js.map
+│   ├── manifest.json
+│   ├── package.json
+│   ├── pnpm-lock.yaml
+│   ├── scripts/
+│   │   ├── build.js
+│   │   ├── dev.js
+│   ├── src/
+│   │   ├── background.ts
+│   │   ├── contentScript.ts
+│   │   ├── popup.html
+│   │   ├── popup.ts
+│   ├── tsconfig.json
 ├── frontend/
 │   ├── README.md
 │   ├── components.json
@@ -17,12 +35,6 @@ AI_Powered_Tools/
 │   │   ├── window.svg
 │   ├── src/
 │   │   ├── app/
-│   │   │   ├── about/
-│   │   │   │   ├── page.tsx
-│   │   │   ├── blog/
-│   │   │   │   ├── page.tsx
-│   │   │   ├── contact/
-│   │   │   │   ├── page.tsx
 │   │   │   ├── favicon.ico
 │   │   │   ├── globals.css
 │   │   │   ├── layout.tsx
@@ -56,4 +68,21 @@ AI_Powered_Tools/
 │   │   │   ├── utils.ts
 │   ├── tailwind.config.ts
 │   ├── tsconfig.json
+├── package.json
+├── pnpm-lock.yaml
+├── shared/
+│   ├── dist/
+│   │   ├── chunk-L3UBYPSM.js
+│   │   ├── index.d.ts
+│   │   ├── index.js
+│   │   ├── utils.d.ts
+│   │   ├── utils.js
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── src/
+│   │   ├── index.ts
+│   │   ├── styles.css
+│   │   ├── utils.ts
+│   ├── tsconfig.json
 ├── tree.py
+├── tsconfig.json
