@@ -2,31 +2,46 @@
   "manifest_version": 3,
   "name": "CardContext",
   "version": "1.0.0",
-  "description": "Save text selections from any webpage as context cards for Digital SM Studio.",
+  "description": "Capture selected text from any page and save it as a context card.",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
   "background": {
-    "service_worker": "dist/background.js",
+    "service_worker": "background.js",
     "type": "module"
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["dist/contentScript.js"],
-      "run_at": "document_end"
+      "js": ["contentScript.js"],
+      "run_at": "document_idle"
     }
   ],
   "action": {
-    "default_popup": "dist/popup.html",
+    "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
+      "48": "icons/icon48.png"
     }
   },
-  "permissions": ["storage", "activeTab", "scripting"],
-  "host_permissions": ["<all_urls>"]
+  "web_accessible_resources": [
+  {
+    "resources": ["icons/*"],
+    "matches": ["<all_urls>"]
+  }
+],
+  "content_security_policy": {
+  "extension_pages": "script-src 'self'; object-src 'self';"
+}
+
 }

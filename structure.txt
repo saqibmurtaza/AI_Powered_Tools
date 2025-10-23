@@ -1,22 +1,125 @@
 AI_Powered_Tools/
-├── extension/
+├── extension-fixed/
 │   ├── dist/
 │   │   ├── background.js
 │   │   ├── background.js.map
 │   │   ├── contentScript.js
 │   │   ├── contentScript.js.map
+│   │   ├── icons/
+│   │   │   ├── card.jpg
+│   │   │   ├── icon128.png
+│   │   │   ├── icon16.png
+│   │   │   ├── icon48.png
+│   │   ├── manifest.json
+│   │   ├── popup.html
+│   │   ├── popup.js
+│   │   ├── popup.js.map
+│   ├── icons/
+│   │   ├── card.jpg
+│   │   ├── icon128.png
+│   │   ├── icon16.png
+│   │   ├── icon48.png
 │   ├── manifest.json
 │   ├── package.json
 │   ├── pnpm-lock.yaml
+│   ├── popup.html
 │   ├── scripts/
 │   │   ├── build.js
 │   │   ├── dev.js
 │   ├── src/
 │   │   ├── background.ts
 │   │   ├── contentScript.ts
-│   │   ├── popup.html
+│   │   ├── popup.css
 │   │   ├── popup.ts
+│   │   ├── utils/
+│   │   │   ├── clerk.ts
+│   │   │   ├── debounce.ts
+│   │   │   ├── selection.ts
+│   │   │   ├── syncService.ts
+│   │   ├── vite-env.d.ts
 │   ├── tsconfig.json
+│   ├── vite.config.ts
+├── extension-fixed-backupwith1button-20251022/
+│   ├── dist/
+│   │   ├── background.js
+│   │   ├── background.js.map
+│   │   ├── contentScript.js
+│   │   ├── contentScript.js.map
+│   │   ├── icons/
+│   │   │   ├── card.jpg
+│   │   │   ├── icon128.png
+│   │   │   ├── icon16.png
+│   │   │   ├── icon48.png
+│   │   │   ├── icons/
+│   │   │   │   ├── card.jpg
+│   │   │   │   ├── icon128.png
+│   │   │   │   ├── icon16.png
+│   │   │   │   ├── icon48.png
+│   │   ├── popup.html
+│   │   ├── popup.js
+│   │   ├── popup.js.map
+│   ├── icons/
+│   │   ├── card.jpg
+│   │   ├── icon128.png
+│   │   ├── icon16.png
+│   │   ├── icon48.png
+│   ├── manifest.json
+│   ├── package.json
+│   ├── pnpm-lock.yaml
+│   ├── popup.html
+│   ├── scripts/
+│   │   ├── build.js
+│   │   ├── dev.js
+│   ├── src/
+│   │   ├── background.ts
+│   │   ├── contentScript.ts
+│   │   ├── popup.css
+│   │   ├── popup.ts
+│   │   ├── utils/
+│   │   │   ├── debounce.ts
+│   │   │   ├── selection.ts
+│   ├── tsconfig.json
+├── extension-fixed-backupwith1buttonii-20251023/
+│   ├── dist/
+│   │   ├── background.js
+│   │   ├── background.js.map
+│   │   ├── contentScript.js
+│   │   ├── contentScript.js.map
+│   │   ├── icons/
+│   │   │   ├── card.jpg
+│   │   │   ├── icon128.png
+│   │   │   ├── icon16.png
+│   │   │   ├── icon48.png
+│   │   ├── manifest.json
+│   │   ├── popup.html
+│   │   ├── popup.js
+│   │   ├── popup.js.map
+│   ├── icons/
+│   │   ├── card.jpg
+│   │   ├── icon128.png
+│   │   ├── icon16.png
+│   │   ├── icon48.png
+│   ├── manifest.json
+│   ├── package.json
+│   ├── pnpm-lock.yaml
+│   ├── popup.html
+│   ├── scripts/
+│   │   ├── build.js
+│   │   ├── dev.js
+│   ├── src/
+│   │   ├── background.ts
+│   │   ├── contentScript.ts
+│   │   ├── popup.css
+│   │   ├── popup.ts
+│   │   ├── utils/
+│   │   │   ├── clerk.ts
+│   │   │   ├── debounce.ts
+│   │   │   ├── selection.ts
+│   │   │   ├── syncService.ts
+│   │   ├── vite-env.d.ts
+│   ├── tsconfig.json
+│   ├── vite.config.ts
+├── extension-fixed-backupwith1buttonii-20251023 /
 ├── frontend/
 │   ├── README.md
 │   ├── components.json
@@ -66,6 +169,8 @@ AI_Powered_Tools/
 │   │   ├── lib/
 │   │   │   ├── gemini.tsx
 │   │   │   ├── utils.ts
+│   │   ├── utils/
+│   │   │   ├── envCheck.ts
 │   ├── tailwind.config.ts
 │   ├── tsconfig.json
 ├── package.json

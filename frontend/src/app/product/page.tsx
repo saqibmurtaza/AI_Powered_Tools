@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-    FileTextIcon, MessageSquareIcon, BriefcaseIcon,
+    
     ACCENT_COLOR_CLASS, ACCENT_TEXT_COLOR_CLASS, TEXT_COLOR_CLASS
 } from '../../lib/gemini';
 

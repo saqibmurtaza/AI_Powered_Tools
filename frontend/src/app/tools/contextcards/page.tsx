@@ -1,43 +1,167 @@
 "use client";
 
-import SelectionToContext from '@/components/toolwiz/SelectionToContext';
+import SelectionToContext from "@/components/toolwiz/SelectionToContext";
 import React, { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Upload, Download, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+// import { isCardContextExtensionActive } from "@/utils/envCheck"; // not used currently
 
-type ContextCard = {
+// ----------------------
+// 🧠 Type Definitions
+// ----------------------
+interface ContextCard {
   id: string;
   title: string;
   description: string;
   tags: string[];
   createdAt?: string;
-};
+}
 
-// 1. Defined a specific type for the payload to upsert a card
 type UpsertPayload = Omit<ContextCard, "id" | "createdAt"> & { id?: string };
 
-export default function ContextCardsPage() {
-  // --- state (no localStorage reads during SSR) ---
+// Chrome storage types
+interface ChromeStorageChange {
+  newValue?: ContextCard[];
+  oldValue?: ContextCard[];
+}
+
+interface ChromeStorageArea {
+  get: (keys: string[], callback: (result: { [key: string]: unknown }) => void) => void;
+}
+
+interface ChromeStorage {
+  local: ChromeStorageArea;
+  onChanged: {
+    addListener: (callback: (changes: { [key: string]: ChromeStorageChange }) => void) => void;
+  };
+}
+
+interface ExtendedWindow extends Window {
+  chrome?: {
+    storage: ChromeStorage;
+  };
+}
+
+// ----------------------
+// 🧩 Component
+// ----------------------
+export default function ContextCardsPage(): JSX.Element {
   const [cards, setCards] = useState<ContextCard[]>([]);
   const [search, setSearch] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-  // Editor state
   const [showEditor, setShowEditor] = useState(false);
   const [editingCard, setEditingCard] = useState<ContextCard | null>(null);
 
-  // --- load saved cards after mount (client only) ---
+  // ----------------------
+  // 📦 Load from storage
+  // ----------------------
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("context-cards");
-      if (raw) setCards(JSON.parse(raw));
-    } catch (e) {
-      console.warn("Failed to load context-cards", e);
+    let mounted = true;
+
+    async function loadCards() {
+      try {
+        const extendedWindow = window as ExtendedWindow;
+        if (
+          typeof window !== "undefined" &&
+          typeof extendedWindow.chrome !== "undefined" &&
+          extendedWindow.chrome?.storage?.local
+        ) {
+          // ✅ Read from extension storage
+          extendedWindow.chrome.storage.local.get(
+            ["contextCards"],
+            (res: { contextCards?: ContextCard[] }) => {
+              if (!mounted) return;
+              const fromExt = Array.isArray(res?.contextCards)
+                ? res.contextCards
+                : [];
+
+              if (fromExt.length > 0) {
+                try {
+                  const rawLocal = localStorage.getItem("context-cards");
+                  const local = rawLocal
+                    ? (JSON.parse(rawLocal) as ContextCard[])
+                    : [];
+                  const byId = new Map<string, ContextCard>();
+                  [...fromExt, ...local].forEach((c) =>
+                    byId.set(String(c.id), c)
+                  );
+                  const merged = Array.from(byId.values());
+                  setCards(merged);
+                  localStorage.setItem("context-cards", JSON.stringify(merged));
+                } catch (e) {
+                  console.warn(
+                    "Failed merging extension + local storage",
+                    e
+                  );
+                  setCards(fromExt);
+                }
+              } else {
+                const raw = localStorage.getItem("context-cards");
+                if (raw) setCards(JSON.parse(raw));
+              }
+            }
+          );
+
+          // ✅ Subscribe to extension updates
+          try {
+            extendedWindow.chrome.storage.onChanged.addListener(
+              (
+                changes: { [key: string]: ChromeStorageChange }
+              ): void => {
+                if (!mounted) return;
+                if (changes.contextCards?.newValue) {
+                  const newCards = Array.isArray(
+                    changes.contextCards.newValue
+                  )
+                    ? changes.contextCards.newValue
+                    : [];
+                  setCards((prev) => {
+                    const byId = new Map<string, ContextCard>();
+                    [...newCards, ...prev].forEach((c) =>
+                      byId.set(String(c.id), c)
+                    );
+                    const merged = Array.from(byId.values());
+                    try {
+                      localStorage.setItem(
+                        "context-cards",
+                        JSON.stringify(merged)
+                      );
+                    } catch {}
+                    return merged;
+                  });
+                }
+              }
+            );
+          } catch {
+            // ignore if listener not supported
+          }
+
+          return;
+        }
+      } catch (e) {
+        console.warn("chrome.storage access failed, falling back to localStorage", e);
+      }
+
+      // ❌ fallback: localStorage only
+      try {
+        const raw = localStorage.getItem("context-cards");
+        if (raw) setCards(JSON.parse(raw));
+      } catch (e) {
+        console.warn("Failed to load context-cards from localStorage", e);
+      }
     }
+
+    loadCards();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  // --- persist cards ---
+  // ----------------------
+  // 💾 Persist locally
+  // ----------------------
   useEffect(() => {
     try {
       localStorage.setItem("context-cards", JSON.stringify(cards));
@@ -46,14 +170,15 @@ export default function ContextCardsPage() {
     }
   }, [cards]);
 
-  // Derived tags
+  // ----------------------
+  // 🏷️ Tags & Filters
+  // ----------------------
   const tags = useMemo(() => {
     const s = new Set<string>();
     cards.forEach((c) => (c.tags || []).forEach((t) => s.add(t)));
     return Array.from(s).sort();
   }, [cards]);
 
-  // Filtered cards for display
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return cards.filter((c) => {
@@ -67,20 +192,21 @@ export default function ContextCardsPage() {
     });
   }, [cards, search, selectedTag]);
 
-  // CRUD helpers
-  // 2. Used the defined UpsertPayload type instead of Omit<ContextCard, ...>
-  function upsertCard(payload: UpsertPayload) {
+  // ----------------------
+  // ✏️ CRUD Helpers
+  // ----------------------
+  function upsertCard(payload: UpsertPayload): void {
     if (payload.id) {
-      // update existing
-      // 3. Cast the combined object back to ContextCard to satisfy the setCards state type
-      setCards((s) => s.map((c) => (c.id === payload.id ? { ...c, ...payload } as ContextCard : c)));
+      setCards((s) =>
+        s.map((c) =>
+          c.id === payload.id ? { ...c, ...payload } : c
+        )
+      );
     } else {
-      // create new
       const newCard: ContextCard = {
-        // 4. Fixed 'any' usage: use 'window.crypto' and cast 'crypto' to 'Crypto' (or a type with randomUUID) if randomUUID is preferred.
-        // For simplicity and to fix the 'any' error, we use the preferred safe path (Date.now()) or assume 'crypto' exists on 'window'.
-        // The original code was likely trying to use the modern 'crypto.randomUUID()'.
-        id: (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : Date.now().toString(),
+        id:
+          (window.crypto as Crypto).randomUUID?.() ??
+          Date.now().toString(),
         createdAt: new Date().toISOString(),
         title: payload.title,
         description: payload.description,
@@ -90,12 +216,12 @@ export default function ContextCardsPage() {
     }
   }
 
-  function removeCard(id: string) {
+  function removeCard(id: string): void {
     if (!confirm("Delete this card?")) return;
     setCards((s) => s.filter((c) => c.id !== id));
   }
 
-  function exportJSON() {
+  function exportJSON(): void {
     const payload = JSON.stringify(cards, null, 2);
     const blob = new Blob([payload], { type: "application/json" });
     const href = URL.createObjectURL(blob);
@@ -106,13 +232,12 @@ export default function ContextCardsPage() {
     URL.revokeObjectURL(href);
   }
 
-  function importJSON(file: File | null) {
+  function importJSON(file: File | null): void {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
       try {
         const parsed = JSON.parse(String(reader.result || "[]")) as ContextCard[];
-        // merge by id
         const byId = new Map(cards.map((c) => [c.id, c]));
         parsed.forEach((p) => byId.set(p.id, p));
         setCards(Array.from(byId.values()));
@@ -124,27 +249,27 @@ export default function ContextCardsPage() {
     reader.readAsText(file);
   }
 
-  // Editor open for new card
-  function openNewCardEditor() {
-    setEditingCard(null);
-    setShowEditor(true);
-  }
-
-  // Editor open for edit
-  // 5. This function is now used inside the JSX to fix the 'never used' warning
-  function openEditCardEditor(card: ContextCard) {
+  // ----------------------
+  // 🧰 Editor Modal
+  // ----------------------
+  function openEditCardEditor(card: ContextCard): void {
     setEditingCard(card);
     setShowEditor(true);
   }
 
-  // --- Editor component (modal) ---
-  function EditorModal({ card, onClose }: { card?: ContextCard | null; onClose: () => void }) {
+  function EditorModal({
+    card,
+    onClose,
+  }: {
+    card?: ContextCard | null;
+    onClose: () => void;
+  }): JSX.Element {
     const isNew = !card;
     const [title, setTitle] = useState(card?.title || "");
     const [description, setDescription] = useState(card?.description || "");
     const [tagsInput, setTagsInput] = useState((card?.tags || []).join(", "));
 
-    function save() {
+    function save(): void {
       const tags = tagsInput
         .split(",")
         .map((t) => t.trim())
@@ -160,7 +285,10 @@ export default function ContextCardsPage() {
 
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+        <div
+          className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+          onClick={onClose}
+        />
         <motion.div
           initial={{ opacity: 0, y: 8, scale: 0.995 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -168,7 +296,9 @@ export default function ContextCardsPage() {
           className="relative z-10 w-full max-w-2xl bg-[#0f1724] border border-white/6 rounded-2xl shadow-2xl p-6"
         >
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-lg font-semibold">{isNew ? "New Context Card" : "Edit Context Card"}</h3>
+            <h3 className="text-lg font-semibold">
+              {isNew ? "New Context Card" : "Edit Context Card"}
+            </h3>
             <button onClick={onClose} className="p-1 rounded-md hover:bg-white/6">
               <X className="w-5 h-5" />
             </button>
@@ -188,7 +318,6 @@ export default function ContextCardsPage() {
               rows={5}
               className="w-full bg-[#061021] border border-white/6 rounded-md px-3 py-2 outline-none resize-none"
             />
-
             <input
               placeholder="tags — comma separated"
               value={tagsInput}
@@ -203,7 +332,10 @@ export default function ContextCardsPage() {
               >
                 Cancel
               </button>
-              <button onClick={save} className="px-3 py-1 rounded-md bg-violet-600 hover:bg-violet-700">
+              <button
+                onClick={save}
+                className="px-3 py-1 rounded-md bg-violet-600 hover:bg-violet-700"
+              >
                 Save
               </button>
             </div>
@@ -213,20 +345,20 @@ export default function ContextCardsPage() {
     );
   }
 
-  // --- UI ---
+  // ----------------------
+  // 🎨 UI
+  // ----------------------
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 text-white py-12">
-      {/* 6. Removed duplicate SelectionToContext component */}
       <SelectionToContext
-        onAdd={(selectedText) => {
-          // open the existing editor modal and prefill values
+        onAdd={(selectedText: string) => {
           setEditingCard({
-            id: '', // new card (no id) indicates new in upsert flow
-            title: 'Captured Highlight',
+            id: "",
+            title: "Captured Highlight",
             description: selectedText,
-            tags: ['highlight'],
+            tags: ["highlight"],
             createdAt: new Date().toISOString(),
-          } as ContextCard); // Added cast to ensure correct type for setEditingCard
+          });
           setShowEditor(true);
         }}
       />
@@ -235,13 +367,15 @@ export default function ContextCardsPage() {
           ToolWiz — Context Cards
         </h1>
 
+        {/* 🔍 Search + Actions */}
         <Card className="bg-white/5 backdrop-blur-xl border-white/10 shadow-xl mb-8">
           <CardContent className="p-6">
-            {/* Toolbar row */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="flex items-center gap-3 w-full md:w-2/3">
                 <div className="flex items-center bg-white/6 rounded-full px-3 py-2 w-full">
-                  <span className="opacity-70 mr-2"><SearchIcon /></span>
+                  <span className="opacity-70 mr-2">
+                    <SearchIcon />
+                  </span>
                   <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -253,17 +387,20 @@ export default function ContextCardsPage() {
 
               <div className="flex gap-2 items-center justify-end">
                 <button
-                  onClick={openNewCardEditor}
+                  onClick={() => {
+                    setEditingCard(null);
+                    setShowEditor(true);
+                  }}
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-violet-600 hover:bg-violet-700"
                 >
-                  <PlusIcon /> Add
+                  <Plus className="w-4 h-4" /> Add
                 </button>
 
                 <button
-                  onClick={exportJSONButton}
+                  onClick={exportJSON}
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl border border-white/10 bg-white/2"
                 >
-                  <DownloadIcon /> Export
+                  <Download className="w-4 h-4" /> Export
                 </button>
 
                 <label className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl border border-white/10 bg-white/2 cursor-pointer">
@@ -271,14 +408,16 @@ export default function ContextCardsPage() {
                     type="file"
                     accept="application/json"
                     className="hidden"
-                    onChange={(e) => importJSON(e.target.files?.[0] ?? null)}
+                    onChange={(e) =>
+                      importJSON(e.target.files?.[0] ?? null)
+                    }
                   />
-                  <UploadIcon /> Import
+                  <Upload className="w-4 h-4" /> Import
                 </label>
               </div>
             </div>
 
-            {/* Tags */}
+            {/* 🏷️ Tags */}
             <div className="mt-4 flex items-center gap-3">
               <div className="flex items-center gap-2 opacity-80">
                 <TagIcon />
@@ -288,15 +427,21 @@ export default function ContextCardsPage() {
               <div className="flex gap-2 flex-wrap">
                 <button
                   onClick={() => setSelectedTag(null)}
-                  className={`px-3 py-1 rounded-full border ${selectedTag === null ? "bg-white/8" : "bg-transparent"}`}
+                  className={`px-3 py-1 rounded-full border ${
+                    selectedTag === null ? "bg-white/8" : "bg-transparent"
+                  }`}
                 >
                   All
                 </button>
                 {tags.map((t) => (
                   <button
                     key={t}
-                    onClick={() => setSelectedTag((s) => (s === t ? null : t))}
-                    className={`px-3 py-1 rounded-full border ${selectedTag === t ? "bg-white/8" : "bg-transparent"}`}
+                    onClick={() =>
+                      setSelectedTag((s) => (s === t ? null : t))
+                    }
+                    className={`px-3 py-1 rounded-full border ${
+                      selectedTag === t ? "bg-white/8" : "bg-transparent"
+                    }`}
                   >
                     {t}
                   </button>
@@ -306,10 +451,19 @@ export default function ContextCardsPage() {
           </CardContent>
         </Card>
 
-        {/* Editor modal */}
-        <AnimatePresence>{showEditor && <EditorModal card={editingCard || undefined} onClose={() => { setShowEditor(false); setEditingCard(null); }} />}</AnimatePresence>
+        <AnimatePresence>
+          {showEditor && (
+            <EditorModal
+              card={editingCard || undefined}
+              onClose={() => {
+                setShowEditor(false);
+                setEditingCard(null);
+              }}
+            />
+          )}
+        </AnimatePresence>
 
-        {/* Cards grid */}
+        {/* 🗂️ Cards List */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((c) => (
             <motion.article
@@ -324,19 +478,35 @@ export default function ContextCardsPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <div className="rounded-full w-10 h-10 flex items-center justify-center bg-white/12">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 2v20M2 12h20" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <path
+                          d="M12 2v20M2 12h20"
+                          stroke="white"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
                     </div>
                     <h3 className="text-lg font-semibold">{c.title}</h3>
                   </div>
 
-                  <p className="mt-2 text-sm opacity-80 line-clamp-3">{c.description}</p>
+                  <p className="mt-2 text-sm opacity-80 line-clamp-3">
+                    {c.description}
+                  </p>
 
                   <div className="mt-3 flex flex-wrap gap-2">
                     {(c.tags || []).length > 0 ? (
                       (c.tags || []).map((t) => (
-                        <span key={t} className="px-2 py-1 rounded-full text-xs border bg-white/6 text-white/80">
+                        <span
+                          key={t}
+                          className="px-2 py-1 rounded-full text-xs border bg-white/6 text-white/80"
+                        >
                           {t}
                         </span>
                       ))
@@ -345,29 +515,27 @@ export default function ContextCardsPage() {
                     )}
                   </div>
 
-                  <div className="mt-3 text-xs opacity-60">Created: {new Date(c.createdAt ?? "").toLocaleString()}</div>
+                  <div className="mt-3 text-xs opacity-60">
+                    Created:{" "}
+                    {new Date(c.createdAt ?? "").toLocaleString()}
+                  </div>
                 </div>
 
                 <div className="flex flex-col items-end gap-2">
                   <button
                     title="Edit"
-                    onClick={() => {
-                      // Call the function directly to make it "used"
-                      openEditCardEditor(c); 
-                    }}
+                    onClick={() => openEditCardEditor(c)}
                     className="p-2 rounded-lg border bg-white/4 text-white"
                   >
-                    <EditIcon />
+                    ✏️
                   </button>
 
                   <button
                     title="Delete"
-                    onClick={() => {
-                      if (confirm("Delete this card?")) removeCard(c.id);
-                    }}
+                    onClick={() => removeCard(c.id)}
                     className="p-2 rounded-lg border bg-white/4 text-white"
                   >
-                    <TrashIcon />
+                    🗑️
                   </button>
                 </div>
               </div>
@@ -381,30 +549,47 @@ export default function ContextCardsPage() {
           </div>
         )}
 
-        <div className="mt-6 text-right text-sm opacity-70 text-white">Tech-savvy, extendable, and ready to integrate.</div>
+        <div className="mt-6 text-right text-sm opacity-70 text-white">
+          Tech-savvy, extendable, and ready to integrate.
+        </div>
       </div>
     </main>
   );
 
-  // -------------------------
-  // small inline icon components (keeps imports compact and avoids missing-icon issues)
-  // -------------------------
+  // ----------------------
+  // 🎯 Helper Icons
+  // ----------------------
+
   function SearchIcon() {
-    return <svg className="w-4 h-4 opacity-70" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="11" cy="11" r="6" stroke="white" strokeWidth="1.5" /></svg>;
+    return (
+      <svg className="w-4 h-4 opacity-70" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M21 21l-4.35-4.35"
+          stroke="white"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <circle cx="11" cy="11" r="6" stroke="white" strokeWidth="1.5" />
+      </svg>
+    );
   }
-  function PlusIcon() { return <Plus className="w-4 h-4" />; }
-  function DownloadIcon() { return <Download className="w-4 h-4" />; }
-  function UploadIcon() { return <Upload className="w-4 h-4" />; }
-  function TagIcon() { return <svg className="w-4 h-4 opacity-80" viewBox="0 0 24 24" fill="none"><path d="M20 10v6a2 2 0 0 1-2 2h-6l-8-8 6-6 8 8z" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
-  function EditIcon() { return <EditIconInner />; }
-  function TrashIcon() { return <TrashIconInner />; }
 
-  // small wrappers for icons (local to avoid extra imports miss)
-  function EditIconInner() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M3 21v-3.6L14.6 5.8l3.6 3.6L6.6 21H3z" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
-  function TrashIconInner() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6v13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6M10 4h4l1 2H9l1-2z" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>; }
-
-  // small wrappers to call existing functions from within JSX
-  function exportJSONButton() { exportJSON(); }
-  
-  // 7. Removed the unused exportJSONInner and importJSONInner wrappers
+  function TagIcon() {
+    return (
+      <svg
+        className="w-4 h-4 opacity-80"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+        <path
+          d="M20 10v6a2 2 0 0 1-2 2h-6l-8-8 6-6 8 8z"
+          stroke="white"
+          strokeWidth="1.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
 }

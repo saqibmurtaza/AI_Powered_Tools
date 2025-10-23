@@ -52,4 +52,6 @@ yarn-debug.log*
 .vercel
 
 sanity-studio/
+extension-fixed-backup*/
+
 

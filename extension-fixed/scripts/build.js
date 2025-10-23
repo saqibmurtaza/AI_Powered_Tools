@@ -3,6 +3,10 @@ import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
+import dotenv from 'dotenv';
+
+// ✅ Load environment variables from .env file
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,6 +20,8 @@ const srcDir = path.join(rootDir, 'src');
 const iconsDir = path.join(rootDir, 'icons');
 const popupHtmlSrc = path.join(rootDir, 'popup.html');
 const popupHtmlDest = path.join(distDir, 'popup.html');
+const manifestSrc = path.join(rootDir, 'manifest.json');
+const manifestDest = path.join(distDir, 'manifest.json');
 
 // Ensure dist directory exists
 if (!fs.existsSync(distDir)) {
@@ -23,13 +29,20 @@ if (!fs.existsSync(distDir)) {
   console.log('📁 Created dist directory');
 }
 
+// ✅ Automatically inject .env values
+const defineEnv = {
+  'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(process.env.VITE_SUPABASE_URL || ''),
+  'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY || '')
+};
+
 const baseConfig = {
   bundle: true,
   minify: false,
   sourcemap: true,
-  external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.devDependencies || {})],
   platform: 'browser',
   target: 'es2020',
+  format: 'esm',
+  define: defineEnv
 };
 
 const configs = [
@@ -59,15 +72,19 @@ async function build() {
       console.log(`✅ Built: ${path.basename(config.entryPoints[0])} → ${path.basename(config.outfile)}`);
     }
 
-    // ✅ Copy popup.html automatically
-    if (fs.existsSync(popupHtmlSrc)) {
-      fs.copyFileSync(popupHtmlSrc, popupHtmlDest);
-      console.log('📄 Copied popup.html → dist/popup.html');
-    } else {
-      console.warn('⚠️ popup.html not found in root folder.');
+    // Copy manifest.json
+    if (fs.existsSync(manifestSrc)) {
+      fs.copyFileSync(manifestSrc, manifestDest);
+      console.log('📋 Copied manifest.json → dist/');
     }
 
-    // ✅ Copy icons folder automatically
+    // Copy popup.html
+    if (fs.existsSync(popupHtmlSrc)) {
+      fs.copyFileSync(popupHtmlSrc, popupHtmlDest);
+      console.log('📄 Copied popup.html → dist/');
+    }
+
+    // Copy icons
     if (fs.existsSync(iconsDir)) {
       const distIconsDir = path.join(distDir, 'icons');
       fs.mkdirSync(distIconsDir, { recursive: true });
@@ -75,13 +92,10 @@ async function build() {
         fs.copyFileSync(path.join(iconsDir, file), path.join(distIconsDir, file));
       });
       console.log('🖼️ Copied icons → dist/icons/');
-    } else {
-      console.warn('⚠️ No icons folder found.');
     }
 
     console.log('🎉 Extension build complete!');
-    const files = fs.readdirSync(distDir);
-    console.log('📁 Files in dist/:', files);
+    console.log('📁 Files in dist/:', fs.readdirSync(distDir));
   } catch (error) {
     console.error('❌ Build failed:', error);
     process.exit(1);
