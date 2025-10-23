@@ -97,7 +97,9 @@ export default function Header() {
             {/* ToolWiz Section */}
             <div>
               <h3 className="text-[#7C3AED] font-semibold mb-2 text-base border-b border-gray-100 pb-2">
-                {siteData.toolwiz.title}
+                <Link href="/tools" className="hover:text-[#7C3AED] py-2 px-3 rounded-md hover:bg-purple-50 transition-colors font-medium" onClick={() => setOpen(false)}>
+                  Tools
+                </Link>
               </h3>
               <div className="flex flex-col gap-2 ml-2">
                 {siteData.toolwiz.tools.map((tool) => (
@@ -121,7 +123,7 @@ export default function Header() {
             {/* SMBotics Section */}
             <div>
               <h3 className="text-[#7C3AED] font-semibold mb-2 text-base border-b border-gray-100 pb-2">
-                {siteData.smbotics.title}
+                SMBotics
               </h3>
               <div className="flex flex-col gap-2 ml-2">
                 {siteData.smbotics.bots.map((bot, index) => (
