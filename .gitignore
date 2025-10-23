@@ -53,5 +53,7 @@ yarn-debug.log*
 
 sanity-studio/
 extension-fixed-backup*/
+frontend-backup*/
+
 
 

@@ -1,4 +1,4 @@
-// src/data/sections.ts
+// frontend/src/data/sections.ts
 export const siteData = {
   toolwiz: {
     title: "ToolWiz — Useful Online Tools",
@@ -8,19 +8,32 @@ export const siteData = {
       {
         id: "contextcards",
         name: "Context Cards",
-        link: "/tools/contextcards",
+        link: "/tools/contextcards", // ✅ Already correct
         description: "AI-powered contextual note cards for productivity.",
-        // optional icon placeholder; you can replace with SVG/React component later
         icon: "🧩",
       },
       {
         id: "agecalculator",
         name: "Age Calculator",
-        link: "/age-calculator",
+        link: "/tools/age-calculator", // ✅ Fixed: changed from "/age-calculator" to "/tools/age-calculator"
         description: "Accurate age calculator with time and date precision.",
         icon: "🧮",
       },
       // future tools: just add objects here and they appear across site.
+      {
+        id: "textanalyzer",
+        name: "Text Analyzer",
+        link: "/tools/text-analyzer",
+        description: "Analyze and process text content with AI.",
+        icon: "📊",
+      },
+      {
+        id: "unitconverter", 
+        name: "Unit Converter",
+        link: "/tools/unit-converter",
+        description: "Convert between different units and measurements.",
+        icon: "📏",
+      },
     ],
   },
 
