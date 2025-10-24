@@ -12,7 +12,7 @@ export default function AboutPage() {
     {
       icon: <Rocket className="w-6 h-6" />,
       title: "Innovation",
-      description: "Constantly pushing boundaries with AI-powered solutions and cutting-edge technology."
+      description: "Constantly pushing boundaries with AI-powered solutions and cutting-edge technology"
     },
     {
       icon: <Heart className="w-6 h-6" />,
@@ -22,7 +22,7 @@ export default function AboutPage() {
     {
       icon: <Users className="w-6 h-6" />,
       title: "Community",
-      description: "Building a community of creators, developers, and productivity enthusiasts."
+      description: "Building a community of creators, developers, and productivity enthusiasts"
     }
   ];
 
@@ -59,8 +59,8 @@ export default function AboutPage() {
           <div className="text-6xl mb-4">🌟</div>
           <h1 className="text-4xl font-extrabold text-gray-900 mb-4">About Digital SM Studio</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We're passionate about creating tools that make digital life simpler, smarter, and more productive. 
-            Our journey began with a simple goal: to build solutions that actually help people.
+            We are passionate about creating tools that make digital life simpler, smarter, and more productive
+            Our journey began with a simple goal: to build solutions that actually help people
           </p>
         </div>
 
@@ -105,18 +105,18 @@ export default function AboutPage() {
               </p>
               <p className="text-gray-600 mb-4">
                 So we decided to create something different: clean, focused tools that do one thing exceptionally well. 
-                Tools that are free to use, easy to understand, and powerful enough for professionals.
+                Tools that are free to use, easy to understand, and powerful enough for professionals
               </p>
               <p className="text-gray-600">
-                Today, we're growing rapidly, but our core philosophy remains the same: 
-                build tools we're proud to use ourselves, and make them available to everyone.
+                Today, we're.&apos growing rapidly, but our core philosophy remains the same: 
+                build tools we're proud to use ourselves, and make them available to everyone
               </p>
             </div>
             <div className="bg-white rounded-xl p-6 border border-gray-200 text-center">
               <div className="text-4xl mb-4">🚀</div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Join Our Journey</h3>
               <p className="text-gray-600 text-sm">
-                We're just getting started. There's so much more to build, and we'd love for you to be part of our journey.
+                We're just getting started.&apos There's so much more to build, and we'd love for you to be part of our journey
               </p>
             </div>
           </div>
