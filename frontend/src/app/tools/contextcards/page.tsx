@@ -707,29 +707,55 @@
 
 import SelectionToContext from "@/components/toolwiz/SelectionToContext";
 import React, { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Upload, Download, X, Search, Tag, FileText, Calendar, Zap } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-
-
-
-interface ExtendedWindow extends Window {
-  chrome?: any;
-}
 
 interface ContextCard {
   id: string;
   title: string;
-  description: string;
-  tags: string[];
+  description?: string;
+  tags?: string[];
   createdAt?: string;
 }
 
+interface ExtendedWindow extends Window {
+  chrome?: {
+    storage?: {
+      local?: {
+        get: (
+          keys: string[] | string,
+          callback: (result: { [key: string]: unknown }) => void
+        ) => void;
+      };
+      onChanged?: {
+        addListener: (
+          callback: (changes: Record<string, { newValue?: unknown }>) => void
+        ) => void;
+      };
+    };
+  };
+}
 
 export default function ContextCardsPage() {
   const [cards, setCards] = useState<ContextCard[]>([]);
+
+  // ✅ Add missing handler
+  function handleAddCard(text: string) {
+    const newCard: ContextCard = {
+      id: Date.now().toString(),
+      title: text.slice(0, 60),
+      description: text,
+      tags: [],
+      createdAt: new Date().toISOString(),
+    };
+    setCards((prev) => {
+      const updated = [newCard, ...prev];
+      try {
+        localStorage.setItem("context-cards", JSON.stringify(updated));
+      } catch {
+        /* ignore */
+      }
+      return updated;
+    });
+  }
 
   // ✅ Load cards from extension or localStorage
   useEffect(() => {
@@ -741,17 +767,21 @@ export default function ContextCardsPage() {
 
       if (isExtension) {
         // --- Load from extension storage
-        extendedWindow.chrome.storage.local.get(
+        extendedWindow.chrome?.storage?.local?.get(
           ["contextCards"],
-          (res: { contextCards?: ContextCard[] }) => {
-            const extCards = Array.isArray(res?.contextCards) ? res.contextCards : [];
+          (res: { [key: string]: unknown }) => {
+            const extCards = Array.isArray(res?.contextCards)
+              ? (res.contextCards as ContextCard[])
+              : [];
 
             if (extCards.length > 0) {
               try {
                 const rawLocal = localStorage.getItem("context-cards");
                 const localCards = rawLocal ? JSON.parse(rawLocal) : [];
                 const byId = new Map<string, ContextCard>();
-                [...extCards, ...localCards].forEach((c) => byId.set(String(c.id), c));
+                [...extCards, ...localCards].forEach((c) =>
+                  byId.set(String(c.id), c)
+                );
                 const merged = Array.from(byId.values());
                 setCards(merged);
                 localStorage.setItem("context-cards", JSON.stringify(merged));
@@ -767,21 +797,31 @@ export default function ContextCardsPage() {
 
         // --- Watch for changes from extension
         try {
-          extendedWindow.chrome.storage.onChanged.addListener((changes: any) => {
-            if (changes.contextCards?.newValue) {
-              const newCards = Array.isArray(changes.contextCards.newValue)
-                ? changes.contextCards.newValue
-                : [];
-              setCards((prev) => {
-                const byId = new Map<string, ContextCard>();
-                [...newCards, ...prev].forEach((c) => byId.set(String(c.id), c));
-                const merged = Array.from(byId.values());
-                localStorage.setItem("context-cards", JSON.stringify(merged));
-                return merged;
-              });
+          extendedWindow.chrome?.storage?.onChanged?.addListener?.(
+            (changes: Record<string, { newValue?: unknown }>) => {
+              const contextChange = changes.contextCards;
+              if (contextChange?.newValue) {
+                const newCards = Array.isArray(contextChange.newValue)
+                  ? (contextChange.newValue as ContextCard[])
+                  : [];
+                setCards((prev) => {
+                  const byId = new Map<string, ContextCard>();
+                  [...newCards, ...prev].forEach((c) =>
+                    byId.set(String(c.id), c)
+                  );
+                  const merged = Array.from(byId.values());
+                  localStorage.setItem(
+                    "context-cards",
+                    JSON.stringify(merged)
+                  );
+                  return merged;
+                });
+              }
             }
-          });
-        } catch {}
+          );
+        } catch {
+          /* ignore listener error */
+        }
       } else {
         // --- Fallback for Vercel / normal browser mode
         try {
@@ -796,33 +836,48 @@ export default function ContextCardsPage() {
     loadCards();
   }, []);
 
-  // ✅ Render
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">🧩 Context Cards</h1>
-      <p className="text-gray-600 mb-4">
+    <main className="p-6 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-semibold mb-1">🧩 Context Cards</h1>
+      <p className="text-gray-500 mb-6">
         AI-powered contextual note cards for productivity.
       </p>
 
-      {/* --- Context Cards UI (shown in both localhost & Vercel) --- */}
-      <SelectionToContext cards={cards} setCards={setCards} />
+      {/* --- Context Cards Floating Add Button --- */}
+      <SelectionToContext onAdd={(text) => handleAddCard(text)} />
 
-      {/* --- Optional basic fallback display --- */}
+      {/* --- Context Cards List --- */}
       {cards.length > 0 ? (
-        <div className="mt-6 grid gap-4">
+        <div className="mt-6 grid gap-3">
           {cards.map((card) => (
             <div
               key={card.id}
-              className="p-4 border rounded-xl shadow-sm bg-white"
+              className="p-4 rounded-lg shadow bg-white hover:shadow-md transition"
             >
-              <h3 className="font-semibold">{card.title || "Untitled"}</h3>
-              <p className="text-sm text-gray-600">{card.description}</p>
+              <h3 className="font-semibold text-lg">{card.title}</h3>
+              {card.description && (
+                <p className="text-gray-600 text-sm mt-1">
+                  {card.description}
+                </p>
+              )}
+              {card.tags && card.tags.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {card.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2 py-1 text-xs rounded bg-violet-100 text-violet-600"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
       ) : (
-        <p className="mt-4 text-gray-500">No context cards yet.</p>
+        <p className="text-gray-500 text-sm mt-6">No context cards yet.</p>
       )}
-    </div>
+    </main>
   );
 }
