@@ -108,15 +108,15 @@ export default function AboutPage() {
                 Tools that are free to use, easy to understand, and powerful enough for professionals
               </p>
               <p className="text-gray-600">
-                Today, we're.&apos growing rapidly, but our core philosophy remains the same: 
-                build tools we're proud to use ourselves, and make them available to everyone
+                Today, we&apos;re growing rapidly, but our core philosophy remains the same: 
+                build tools we&apos;re proud to use ourselves, and make them available to everyone
               </p>
             </div>
             <div className="bg-white rounded-xl p-6 border border-gray-200 text-center">
               <div className="text-4xl mb-4">🚀</div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Join Our Journey</h3>
               <p className="text-gray-600 text-sm">
-                We're just getting started.&apos There's so much more to build, and we'd love for you to be part of our journey
+                we&apos;re just getting started There&apos;s so much more to build, and we&apos;d love for you to be part of our journey
               </p>
             </div>
           </div>

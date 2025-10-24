@@ -108,7 +108,7 @@ export default function ToolsPage() {
             ))}
           </div>
           <p className="text-center text-white/80 mt-6 text-sm">
-            We're constantly working on new tools to enhance your workflow
+            We&apos;re constantly working on new tools to enhance your workflow
           </p>
         </div>
       </main>

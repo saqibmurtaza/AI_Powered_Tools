@@ -67,7 +67,7 @@ export default function TextAnalyzerPage() {
           <div className="text-6xl mb-4">📊</div>
           <h1 className="text-4xl font-extrabold text-gray-900 mb-4">Text Analyzer</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6">
-            Advanced text analysis powered by AI. Get deep insights into your content's structure, sentiment, and readability.
+            Advanced text analysis powered by AI. Get deep insights into your content&apos;s structure, sentiment, and readability.
           </p>
           <div className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium">
             <Clock className="w-4 h-4" />
