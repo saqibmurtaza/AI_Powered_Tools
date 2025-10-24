@@ -19,12 +19,10 @@ export default function SelectionToContext({
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const [text, setText] = useState('');
-  // detection: null = pending, true = extension active, false = extension absent
   const [extensionActive, setExtensionActive] = useState<boolean | null>(null);
-  const mounted = useRef(true);
   const hideTimeout = useRef<number | null>(null);
 
-  // 1) Detect extension presence (synchronous + retries)
+  // 1️⃣ Detect whether the CardContext Chrome extension is active
   useEffect(() => {
     if (typeof window === 'undefined') {
       setExtensionActive(false);
@@ -42,11 +40,9 @@ export default function SelectionToContext({
       }
     };
 
-    // immediate check
     const presentNow = checkNow();
-    if (presentNow) return; // extension active — we keep state = true
+    if (presentNow) return;
 
-    // schedule retries (cover delayed injection cases)
     const t1 = window.setTimeout(checkNow, 250);
     const t2 = window.setTimeout(checkNow, 1000);
 
@@ -56,37 +52,28 @@ export default function SelectionToContext({
     };
   }, []);
 
-  // 2) Attach selection listeners ONLY when extensionActive === false
+  // 2️⃣ Attach selection listeners when extension is NOT active
   useEffect(() => {
-    mounted.current = true;
+    if (extensionActive === null || extensionActive === true) return;
 
-    if (extensionActive === null || extensionActive === true) {
-      // either still detecting or extension present — do not attach listeners
-      // But we still return a cleanup closure to keep hook ordering stable
-      return () => {
-        mounted.current = false;
-      };
-    }
-
-    function updateSelectionFromWindow() {
-      if (typeof window === 'undefined') return;
+    const updateSelection = () => {
       const sel = window.getSelection?.();
       if (!sel) {
         setVisible(false);
         setText('');
         return;
       }
+
       const str = sel.toString().trim();
       if (!str || str.length < minLength) {
         setVisible(false);
         setText('');
         return;
       }
+
       const range = sel.getRangeAt ? sel.getRangeAt(0) : null;
-      if (!range) {
-        setVisible(false);
-        return;
-      }
+      if (!range) return;
+
       const rect = range.getBoundingClientRect();
       if (!rect || (rect.width === 0 && rect.height === 0)) {
         setVisible(false);
@@ -106,24 +93,18 @@ export default function SelectionToContext({
         window.clearTimeout(hideTimeout.current);
         hideTimeout.current = null;
       }
-    }
+    };
 
-    function onMouseUp() {
-      setTimeout(updateSelectionFromWindow, 10);
-    }
-    function onKeyUp() {
-      setTimeout(updateSelectionFromWindow, 10);
-    }
-    function onScrollOrResize() {
-      setVisible(false);
-    }
-    function onSelectionChange() {
+    const onMouseUp = () => setTimeout(updateSelection, 10);
+    const onKeyUp = () => setTimeout(updateSelection, 10);
+    const onScrollOrResize = () => setVisible(false);
+    const onSelectionChange = () => {
       const sel = window.getSelection?.();
       if (!sel || !sel.toString()) {
         setVisible(false);
         setText('');
       }
-    }
+    };
 
     document.addEventListener('mouseup', onMouseUp);
     document.addEventListener('keyup', onKeyUp);
@@ -141,11 +122,10 @@ export default function SelectionToContext({
         window.clearTimeout(hideTimeout.current);
         hideTimeout.current = null;
       }
-      mounted.current = false;
     };
   }, [minLength, offsetX, offsetY, extensionActive]);
 
-  // 3) If extension becomes active later, ensure we hide/cleanup
+  // 3️⃣ Hide if extension becomes active later
   useEffect(() => {
     if (extensionActive === true) {
       setVisible(false);
@@ -153,20 +133,20 @@ export default function SelectionToContext({
     }
   }, [extensionActive]);
 
-  function handleClick() {
+  const handleClick = () => {
     if (!text) return;
     try {
       onAdd(text);
-    } catch (e) {
-      console.error('SelectionToContext onAdd threw', e);
+    } catch (err) {
+      console.error('SelectionToContext onAdd error:', err);
     }
     const sel = window.getSelection?.();
     sel?.removeAllRanges();
     setVisible(false);
     setText('');
-  }
+  };
 
-  // safe conditional render (hooks always declared above)
+  // 4️⃣ Conditional rendering
   if (extensionActive === null || extensionActive === true) return null;
   if (!visible) return null;
 

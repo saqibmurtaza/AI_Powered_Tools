@@ -79,48 +79,74 @@ AI_Powered_Tools/
 │   │   │   ├── debounce.ts
 │   │   │   ├── selection.ts
 │   ├── tsconfig.json
-├── extension-fixed-backupwith1buttonii-20251023/
-│   ├── dist/
-│   │   ├── background.js
-│   │   ├── background.js.map
-│   │   ├── contentScript.js
-│   │   ├── contentScript.js.map
-│   │   ├── icons/
-│   │   │   ├── card.jpg
-│   │   │   ├── icon128.png
-│   │   │   ├── icon16.png
-│   │   │   ├── icon48.png
-│   │   ├── manifest.json
-│   │   ├── popup.html
-│   │   ├── popup.js
-│   │   ├── popup.js.map
-│   ├── icons/
-│   │   ├── card.jpg
-│   │   ├── icon128.png
-│   │   ├── icon16.png
-│   │   ├── icon48.png
-│   ├── manifest.json
+├── extension-fixed-backupwith1buttonii-20251023 
+├── frontend/
+│   ├── README.md
+│   ├── components.json
+│   ├── eslint.config.mjs
+│   ├── next-env.d.ts
+│   ├── next.config.ts
+│   ├── package-lock.json
 │   ├── package.json
 │   ├── pnpm-lock.yaml
-│   ├── popup.html
-│   ├── scripts/
-│   │   ├── build.js
-│   │   ├── dev.js
+│   ├── postcss.config.cjs
+│   ├── public/
+│   │   ├── file.svg
+│   │   ├── globe.svg
+│   │   ├── logo.png
+│   │   ├── next.svg
+│   │   ├── vercel.svg
+│   │   ├── window.svg
 │   ├── src/
-│   │   ├── background.ts
-│   │   ├── contentScript.ts
-│   │   ├── popup.css
-│   │   ├── popup.ts
+│   │   ├── app/
+│   │   │   ├── about/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── favicon.ico
+│   │   │   ├── globals.css
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── product/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── tools/
+│   │   │   │   ├── [toolId]/
+│   │   │   │   │   ├── page.tsx
+│   │   │   │   ├── age-calculator/
+│   │   │   │   │   ├── page.tsx
+│   │   │   │   ├── contextcards/
+│   │   │   │   │   ├── page.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── text-analyzer/
+│   │   │   │   │   ├── page.tsx
+│   │   │   │   ├── unit-converter/
+│   │   │   │   │   ├── page.tsx
+│   │   ├── components/
+│   │   │   ├── ToolCard.tsx
+│   │   │   ├── layout/
+│   │   │   │   ├── Footer.tsx
+│   │   │   │   ├── Header.tsx
+│   │   │   ├── toolwiz/
+│   │   │   │   ├── ContextCards.tsx
+│   │   │   │   ├── SelectionToContext.tsx
+│   │   │   ├── ui/
+│   │   │   │   ├── badge.tsx
+│   │   │   │   ├── button.tsx
+│   │   │   │   ├── card.tsx
+│   │   │   │   ├── input.tsx
+│   │   ├── context/
+│   │   │   ├── GlobalContextCaptureProvider.tsx
+│   │   ├── data/
+│   │   │   ├── sections.ts
+│   │   │   ├── tools.ts
+│   │   ├── hooks/
+│   │   │   ├── useTextSelection.ts
+│   │   ├── lib/
+│   │   │   ├── gemini.tsx
+│   │   │   ├── utils.ts
 │   │   ├── utils/
-│   │   │   ├── clerk.ts
-│   │   │   ├── debounce.ts
-│   │   │   ├── selection.ts
-│   │   │   ├── syncService.ts
-│   │   ├── vite-env.d.ts
+│   │   │   ├── envCheck.ts
+│   ├── tailwind.config.ts
 │   ├── tsconfig.json
-│   ├── vite.config.ts
-├── extension-fixed-backupwith1buttonii-20251023 /
-├── frontend/
+├── frontend-backup-20251023/
 │   ├── README.md
 │   ├── components.json
 │   ├── eslint.config.mjs
