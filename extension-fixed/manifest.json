@@ -41,7 +41,7 @@
   }
 ],
   "content_security_policy": {
-  "extension_pages": "script-src 'self'; object-src 'self';"
+  "extension_pages": "script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' http://localhost:* https://ai-powered-tools-pi.vercel.app; object-src 'self'"
 }
 
 }
