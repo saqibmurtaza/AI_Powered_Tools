@@ -2,20 +2,20 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Content-Security-Policy',
-            value: "script-src 'self' 'unsafe-eval' 'unsafe-inline' https: http:;"
-          }
-        ],
-      },
-    ];
-  },
+  // More permissive version
+async headers() {
+  return [
+    {
+      source: '/(.*)',
+      headers: [
+        {
+          key: 'Content-Security-Policy',
+          value: "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: http:;"
+        }
+      ],
+    },
+  ];
+},
 }
 
 export default nextConfig
-
