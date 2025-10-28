@@ -1,7 +1,7 @@
-// frontend/src/app/tools/contextcards/page.tsx
 "use client";
 
-import SelectionToContext from "@/components/toolwiz/SelectionToContext";
+// import SelectionToContext from "@/components/toolwiz/SelectionToContext";
+import dynamic from "next/dynamic";
 import React, { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Upload, Download, X, Search, Tag, FileText, Calendar, Zap } from "lucide-react";
@@ -9,7 +9,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-// ... (keep all the type definitions and interfaces the same)
+// load SelectionToContext only on client (avoids any SSR/hydration issues)
+const SelectionToContext = dynamic(
+  () => import("@/components/toolwiz/SelectionToContext"),
+  { ssr: false }
+);
+
 // ----------------------
 // 🧠 Type Definitions
 // ----------------------
@@ -47,53 +52,33 @@ interface ExtendedWindow extends Window {
 }
 
 export default function ContextCardsPage(): JSX.Element {
+  // ✅ Mounted flag moved inside component
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const [cards, setCards] = useState<ContextCard[]>([]);
-    const [search, setSearch] = useState("");
-    const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  
-    const [showEditor, setShowEditor] = useState(false);
-    const [editingCard, setEditingCard] = useState<ContextCard | null>(null);
+  const [search, setSearch] = useState("");
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [showEditor, setShowEditor] = useState(false);
+  const [editingCard, setEditingCard] = useState<ContextCard | null>(null);
 
   const features = [
-    {
-      icon: <FileText className="w-6 h-6" />,
-      title: "Smart Organization",
-      description: "Organize your thoughts, research, and ideas with customizable tags and categories."
-    },
-    {
-      icon: <Zap className="w-6 h-6" />,
-      title: "Quick Capture",
-      description: "Instantly capture text from any webpage using our browser extension integration."
-    },
-    {
-      icon: <Tag className="w-6 h-6" />,
-      title: "Flexible Tagging",
-      description: "Categorize your cards with custom tags for easy filtering and retrieval."
-    },
-    {
-      icon: <Calendar className="w-6 h-6" />,
-      title: "Auto-Save",
-      description: "Your cards are automatically saved locally and sync with browser storage."
-    }
+    { icon: <FileText className="w-6 h-6" />, title: "Smart Organization", description: "Organize your thoughts, research, and ideas with customizable tags and categories." },
+    { icon: <Zap className="w-6 h-6" />, title: "Quick Capture", description: "Instantly capture text from any webpage using our browser extension integration." },
+    { icon: <Tag className="w-6 h-6" />, title: "Flexible Tagging", description: "Categorize your cards with custom tags for easy filtering and retrieval." },
+    { icon: <Calendar className="w-6 h-6" />, title: "Auto-Save", description: "Your cards are automatically saved locally and sync with browser storage." }
   ];
 
   const benefits = [
-    {
-      title: "For Research",
-      items: ["Capture research notes", "Organize sources", "Track key findings"]
-    },
-    {
-      title: "For Learning", 
-      items: ["Create study notes", "Summarize articles", "Build knowledge base"]
-    },
-    {
-      title: "For Productivity",
-      items: ["Track project ideas", "Manage tasks", "Store important information"]
-    }
+    { title: "For Research", items: ["Capture research notes", "Organize sources", "Track key findings"] },
+    { title: "For Learning", items: ["Create study notes", "Summarize articles", "Build knowledge base"] },
+    { title: "For Productivity", items: ["Track project ideas", "Manage tasks", "Store important information"] }
   ];
 
-  // ... (keep all the existing useEffect, useMemo, and CRUD functions exactly the same)
+
 
   // ... (keep the EditorModal component exactly the same)
     // ----------------------
@@ -700,5 +685,7 @@ export default function ContextCardsPage(): JSX.Element {
     </div>
   );
 }
+
+
 
 
