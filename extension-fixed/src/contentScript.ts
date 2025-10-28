@@ -301,11 +301,56 @@ import { debounce } from "./utils/debounce";
   }
 })();
 
+// function signalExtensionActiveToPage() {
+//   try {
+//     const attach = (attempt = 0) => {
+//       const container =
+//         document.documentElement || document.head || document.body;
+//       if (!container) {
+//         if (attempt < 5) {
+//           window.setTimeout(() => attach(attempt + 1), 100);
+//         }
+//         return;
+//       }
+
+//       try {
+//         const injected = document.createElement("script");
+//         injected.type = "text/javascript";
+//         injected.textContent = `
+//           try {
+//             window.__CARDCONTEXT_EXTENSION_ACTIVE__ = true;
+//             window.__CARDCONTEXT_EXTENSION_TIMESTAMP__ = Date.now();
+//           } catch (e) {}
+//         `;
+//         container.appendChild(injected);
+//         injected.remove();
+//       } catch {}
+
+//       try {
+//         document.documentElement.setAttribute("data-cardcontext", "1");
+//       } catch {}
+//     };
+
+//     attach();
+//   } catch {}
+// }
+
+// // call early
+// signalExtensionActiveToPage();
+// (window as any).__CARDCONTEXT_EXTENSION_ACTIVE__ = true;
+// console.log("🎯 CardContext content script initialized.");
+
+// ---- REPLACE THIS BLOCK (signalExtensionActiveToPage + call) WITH THE CODE BELOW ----
+
+/**
+ * Signal extension presence to the page safely (CSP-friendly)
+ * - DO NOT inject inline scripts (CSP will block them on production)
+ * - Use DOM attribute + CustomEvent for page detection
+ */
 function signalExtensionActiveToPage() {
   try {
     const attach = (attempt = 0) => {
-      const container =
-        document.documentElement || document.head || document.body;
+      const container = document.documentElement || document.head || document.body;
       if (!container) {
         if (attempt < 5) {
           window.setTimeout(() => attach(attempt + 1), 100);
@@ -313,32 +358,54 @@ function signalExtensionActiveToPage() {
         return;
       }
 
-      try {
-        const injected = document.createElement("script");
-        injected.type = "text/javascript";
-        injected.textContent = `
-          try {
-            window.__CARDCONTEXT_EXTENSION_ACTIVE__ = true;
-            window.__CARDCONTEXT_EXTENSION_TIMESTAMP__ = Date.now();
-          } catch (e) {}
-        `;
-        container.appendChild(injected);
-        injected.remove();
-      } catch {}
-
+      // 1) Set DOM attribute that envCheck.ts already reads
       try {
         document.documentElement.setAttribute("data-cardcontext", "1");
-      } catch {}
+      } catch (e) {
+        // ignore safely
+      }
+
+      // 2) Dispatch a CustomEvent that page scripts can listen to (optional but useful)
+      try {
+        const ev = new CustomEvent("cardcontext:active", {
+          detail: { timestamp: Date.now() },
+        });
+        document.dispatchEvent(ev);
+      } catch (e) {
+        // ignore
+      }
+
+      // 3) Also attempt to set page-scoped flags by creating a <script src="..."> injection
+      //    only if your extension exposes a web-accessible resource and you want to
+      //    set real window variables in the page context. This example does NOT inject inline JS.
+      //    COMMENTED OUT: keep disabled unless you use web_accessible_resources.
+      //
+      // try {
+      //   const extScriptUrl = chrome.runtime.getURL("page-helper.js");
+      //   const s = document.createElement("script");
+      //   s.src = extScriptUrl;
+      //   s.async = true;
+      //   container.appendChild(s);
+      // } catch (e) {}
+
+      // done
     };
 
     attach();
-  } catch {}
+  } catch (e) {
+    // swallow errors to avoid breaking page
+    console.warn("signalExtensionActiveToPage error:", e);
+  }
 }
 
-// call early
+// call it early
 signalExtensionActiveToPage();
-(window as any).__CARDCONTEXT_EXTENSION_ACTIVE__ = true;
-console.log("🎯 CardContext content script initialized.");
+
+// Additionally, keep the content-script-scoped flag (does not affect page)
+try {
+  (window as any).__CARDCONTEXT_EXTENSION_ACTIVE__ = true;
+} catch {}
+
 
 let currentButton: HTMLButtonElement | null = null;
 
