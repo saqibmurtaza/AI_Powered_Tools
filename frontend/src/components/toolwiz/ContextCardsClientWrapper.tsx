@@ -1,12 +1,26 @@
-// frontend/src/components/toolwiz/ContextCardsClientWrapper.tsx
 'use client';
 
-import dynamic from 'next/dynamic';
 import React from 'react';
 
-// Dynamically import the existing client ContextCards component (no SSR)
-const ContextCardsClient = dynamic(() => import('./ContextCards'), { ssr: false });
+/**
+ * ContextCardsClientWrapper
+ * Client-side wrapper to ensure components using browser APIs (like localStorage or chrome)
+ * only render on the client.
+ */
+interface WrapperProps {
+  children: React.ReactNode;
+}
 
-export default function ContextCardsClientWrapper(): JSX.Element {
-  return <ContextCardsClient />;
+export default function ContextCardsClientWrapper({ children }: WrapperProps): JSX.Element {
+  // Prevent SSR mismatch by ensuring it's only rendered on client
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return <div />; // nothing rendered on server
+
+  // ✅ Renders exactly what was passed, preserving layout
+  return <>{children}</>;
 }

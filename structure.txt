@@ -113,6 +113,7 @@ AI_Powered_Tools/
 │   │   │   │   ├── age-calculator/
 │   │   │   │   │   ├── page.tsx
 │   │   │   │   ├── contextcards/
+│   │   │   │   │   ├── ClientPage.tsx
 │   │   │   │   │   ├── page.tsx
 │   │   │   │   ├── page.tsx
 │   │   │   │   ├── text-analyzer/
@@ -126,6 +127,7 @@ AI_Powered_Tools/
 │   │   │   │   ├── Header.tsx
 │   │   │   ├── toolwiz/
 │   │   │   │   ├── ContextCards.tsx
+│   │   │   │   ├── ContextCardsClientWrapper.tsx
 │   │   │   │   ├── SelectionToContext.tsx
 │   │   │   ├── ui/
 │   │   │   │   ├── badge.tsx
