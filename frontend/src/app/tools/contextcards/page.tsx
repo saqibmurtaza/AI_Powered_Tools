@@ -1,9 +1,7 @@
-// frontend/src/app/tools/contextcards/page.tsx
-// Server component: renders static shell and mounts the client page.
+// Server component
 import React from "react";
-import ClientPage from "./ClientPage"; // import client component directly
+import ClientWrapper from "./ClientWrapper";
 
 export default function ContextCardsPage() {
-  // Keep the server-side render minimal. The actual interactive UI is inside ClientPage.
-  return <ClientPage />;
+  return <ClientWrapper />;
 }

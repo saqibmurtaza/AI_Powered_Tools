@@ -4,17 +4,7 @@
 import dynamic from "next/dynamic";
 import React, { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Plus,
-  Upload,
-  Download,
-  X,
-  Search,
-  Tag,
-  FileText,
-  Calendar,
-  Zap,
-  ArrowLeft,
+import {Plus, Upload, Download, X, Search, Tag, FileText, Calendar, Zap, ArrowLeft,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -23,6 +13,7 @@ import Link from "next/link";
 const SelectionToContext = dynamic(() => import("@/components/toolwiz/SelectionToContext"), {
   ssr: false,
 });
+
 
 // ----------------------
 // 🧠 Type Definitions
@@ -43,6 +34,11 @@ export default function ClientPage(): JSX.Element {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [showEditor, setShowEditor] = useState(false);
   const [editingCard, setEditingCard] = useState<ContextCard | null>(null);
+
+  useEffect(() => {
+  console.log("✅ ClientPage hydrated successfully in browser");
+  }, []);
+
 
   const features = [
     { icon: <FileText className="w-6 h-6" />, title: "Smart Organization", description: "Organize your thoughts, research, and ideas with customizable tags and categories." },
