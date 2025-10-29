@@ -3,12 +3,22 @@
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Upload, Download, X, Search, Tag, FileText, Calendar, Zap, ArrowLeft } from "lucide-react";
+import {
+  Plus,
+  Upload,
+  Download,
+  X,
+  Search,
+  ArrowLeft
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
 // Load SelectionToContext only on client
-const SelectionToContext = dynamic(() => import("@/components/toolwiz/SelectionToContext"), { ssr: false });
+const SelectionToContext = dynamic(
+  () => import("@/components/toolwiz/SelectionToContext"),
+  { ssr: false }
+);
 
 // ----------------------
 // 🧠 Type Definitions
@@ -60,14 +70,19 @@ export default function ContextCardsPage(): JSX.Element {
   // ----------------------
   useEffect(() => {
     let mounted = true;
+    console.log("[DEBUG] useEffect → loadCards triggered");
 
     async function loadCards() {
       try {
         const extendedWindow = window as ExtendedWindow;
+        console.log("[DEBUG] Checking chrome.storage:", !!extendedWindow.chrome?.storage);
+
         if (extendedWindow.chrome?.storage?.local) {
+          console.log("[DEBUG] Using chrome.storage.local.get");
           extendedWindow.chrome.storage.local.get(["contextCards"], (res: { contextCards?: ContextCard[] }) => {
             if (!mounted) return;
             const fromExt = Array.isArray(res?.contextCards) ? res.contextCards : [];
+            console.log("[DEBUG] Retrieved from extension storage:", fromExt);
 
             if (fromExt.length > 0) {
               try {
@@ -76,57 +91,72 @@ export default function ContextCardsPage(): JSX.Element {
                 const byId = new Map<string, ContextCard>();
                 [...fromExt, ...local].forEach((c) => byId.set(String(c.id), c));
                 const merged = Array.from(byId.values());
+                console.log("[DEBUG] Merged cards from extension + local:", merged);
                 setCards(merged);
                 localStorage.setItem("context-cards", JSON.stringify(merged));
               } catch (e) {
-                console.warn("Failed merging extension + local storage", e);
+                console.warn("[WARN] Failed merging extension + local storage", e);
                 setCards(fromExt);
               }
             } else {
               const raw = localStorage.getItem("context-cards");
-              if (raw) setCards(JSON.parse(raw));
+              if (raw) {
+                console.log("[DEBUG] Loaded cards only from localStorage");
+                setCards(JSON.parse(raw));
+              }
             }
           });
 
           // ✅ Listen for updates
           try {
             extendedWindow.chrome.storage.onChanged.addListener((changes: { [key: string]: ChromeStorageChange }) => {
+              console.log("[DEBUG] chrome.storage.onChanged:", changes);
               if (!mounted) return;
               if (changes.contextCards?.newValue) {
-                const newCards = Array.isArray(changes.contextCards.newValue) ? changes.contextCards.newValue : [];
+                const newCards = Array.isArray(changes.contextCards.newValue)
+                  ? changes.contextCards.newValue
+                  : [];
                 setCards((prev) => {
                   const byId = new Map<string, ContextCard>();
                   [...newCards, ...prev].forEach((c) => byId.set(String(c.id), c));
                   const merged = Array.from(byId.values());
+                  console.log("[DEBUG] Updated cards after chrome.onChanged:", merged);
                   localStorage.setItem("context-cards", JSON.stringify(merged));
                   return merged;
                 });
               }
             });
-          } catch {
-            /* ignore */
+          } catch (err) {
+            console.warn("[WARN] Failed attaching chrome.storage listener", err);
           }
           return;
         }
       } catch (e) {
-        console.warn("chrome.storage access failed, using localStorage", e);
+        console.warn("[WARN] chrome.storage access failed, using localStorage fallback", e);
       }
 
       const raw = localStorage.getItem("context-cards");
-      if (raw) setCards(JSON.parse(raw));
+      if (raw) {
+        console.log("[DEBUG] Loaded cards (no chrome.storage) from localStorage");
+        setCards(JSON.parse(raw));
+      }
     }
 
     loadCards();
     return () => {
       mounted = false;
+      console.log("[DEBUG] useEffect cleanup → mounted set false");
     };
   }, []);
 
   // 💾 Persist locally
   useEffect(() => {
     try {
+      console.log("[DEBUG] Persisting cards to localStorage:", cards);
       localStorage.setItem("context-cards", JSON.stringify(cards));
-    } catch {}
+    } catch (e) {
+      console.warn("[WARN] Failed to persist cards to localStorage", e);
+    }
   }, [cards]);
 
   // 🏷️ Tags & Filters
@@ -138,7 +168,7 @@ export default function ContextCardsPage(): JSX.Element {
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return cards.filter((c) => {
+    const f = cards.filter((c) => {
       if (selectedTag && !(c.tags || []).includes(selectedTag)) return false;
       if (!q) return true;
       return (
@@ -147,10 +177,13 @@ export default function ContextCardsPage(): JSX.Element {
         (c.tags || []).join(" ").toLowerCase().includes(q)
       );
     });
+    console.log("[DEBUG] Filtered results:", f);
+    return f;
   }, [cards, search, selectedTag]);
 
   // ✏️ CRUD
   function upsertCard(payload: UpsertPayload): void {
+    console.log("[DEBUG] upsertCard called with:", payload);
     if (payload.id) {
       setCards((s) => s.map((c) => (c.id === payload.id ? { ...c, ...payload } : c)));
     } else {
@@ -161,16 +194,19 @@ export default function ContextCardsPage(): JSX.Element {
         description: payload.description,
         tags: payload.tags || [],
       };
+      console.log("[DEBUG] Created new card:", newCard);
       setCards((s) => [newCard, ...s]);
     }
   }
 
   function removeCard(id: string): void {
+    console.log("[DEBUG] removeCard called for:", id);
     if (!confirm("Delete this card?")) return;
     setCards((s) => s.filter((c) => c.id !== id));
   }
 
   function exportJSON(): void {
+    console.log("[DEBUG] exportJSON triggered with cards:", cards);
     const payload = JSON.stringify(cards, null, 2);
     const blob = new Blob([payload], { type: "application/json" });
     const href = URL.createObjectURL(blob);
@@ -182,15 +218,18 @@ export default function ContextCardsPage(): JSX.Element {
   }
 
   function importJSON(file: File | null): void {
+    console.log("[DEBUG] importJSON file:", file);
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
       try {
         const parsed = JSON.parse(String(reader.result || "[]")) as ContextCard[];
+        console.log("[DEBUG] Parsed imported JSON:", parsed);
         const byId = new Map(cards.map((c) => [c.id, c]));
         parsed.forEach((p) => byId.set(p.id, p));
         setCards(Array.from(byId.values()));
-      } catch {
+      } catch (err) {
+        console.error("[ERROR] Failed to import — invalid JSON", err);
         alert("Failed to import — invalid JSON");
       }
     };
@@ -204,6 +243,7 @@ export default function ContextCardsPage(): JSX.Element {
     const [tagsInput, setTagsInput] = useState((card?.tags || []).join(", "));
 
     function save() {
+      console.log("[DEBUG] EditorModal save called");
       const tags = tagsInput.split(",").map((t) => t.trim()).filter(Boolean);
       upsertCard({ id: card?.id, title: title || "Untitled", description, tags });
       onClose();
@@ -260,6 +300,7 @@ export default function ContextCardsPage(): JSX.Element {
   // ----------------------
   // 🎨 UI
   // ----------------------
+  console.log("[DEBUG] Rendering ContextCardsPage with cards:", cards);
   return (
     <div className="min-h-screen bg-white font-poppins">
       {/* Header */}
@@ -276,6 +317,7 @@ export default function ContextCardsPage(): JSX.Element {
       <main className="max-w-7xl mx-auto px-6 py-12">
         <SelectionToContext
           onAdd={(selectedText: string) => {
+            console.log("[DEBUG] SelectionToContext → onAdd triggered with:", selectedText);
             setEditingCard({
               id: "",
               title: "Captured Highlight",
@@ -304,6 +346,7 @@ export default function ContextCardsPage(): JSX.Element {
               <div className="flex gap-2">
                 <button
                   onClick={() => {
+                    console.log("[DEBUG] Add Card clicked");
                     setEditingCard(null);
                     setShowEditor(true);
                   }}
@@ -316,7 +359,12 @@ export default function ContextCardsPage(): JSX.Element {
                 </button>
                 <label className="px-4 py-2 rounded-lg border bg-white text-gray-700 cursor-pointer">
                   <Upload className="w-4 h-4 inline mr-1" /> Import
-                  <input type="file" accept="application/json" className="hidden" onChange={(e) => importJSON(e.target.files?.[0] ?? null)} />
+                  <input
+                    type="file"
+                    accept="application/json"
+                    className="hidden"
+                    onChange={(e) => importJSON(e.target.files?.[0] ?? null)}
+                  />
                 </label>
               </div>
             </div>
