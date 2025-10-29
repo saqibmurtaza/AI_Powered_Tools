@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: contextcards-frontend
+    env: node
+    rootDir: frontend
+    buildCommand: pnpm install && pnpm build
+    startCommand: pnpm start
+    plan: free
