@@ -114,6 +114,8 @@ AI_Powered_Tools/
 │   │   │   │   │   ├── page.tsx
 │   │   │   │   ├── contextcards/
 │   │   │   │   │   ├── ClientPage.tsx
+│   │   │   │   │   ├── ClientWrapper.tsx
+│   │   │   │   │   ├── ServerPage.tsx
 │   │   │   │   │   ├── page.tsx
 │   │   │   │   ├── page.tsx
 │   │   │   │   ├── text-analyzer/

@@ -1,21 +1,24 @@
 // frontend/next.config.ts
-import type { NextConfig } from 'next'
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: 
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' blob:; " +
+              "connect-src 'self' https: http:; " +
+              "style-src 'self' 'unsafe-inline'; " +
+              "object-src 'none'; " +
+              "base-uri 'self';"
+          }
+        ],
+      },
+    ];
+  },
+};
 
-const nextConfig: NextConfig = {
-  // More permissive version
-async headers() {
-  return [
-    {
-      source: '/(.*)',
-      headers: [
-        {
-          key: 'Content-Security-Policy',
-          value: "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: http:;"
-        }
-      ],
-    },
-  ];
-},
-}
-
-export default nextConfig
+export default nextConfig;

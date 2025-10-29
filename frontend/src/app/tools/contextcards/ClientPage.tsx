@@ -12,8 +12,8 @@ import Link from "next/link";
 // Load SelectionToContext only on client (avoid SSR/hydration issues)
 const SelectionToContext = dynamic(() => import("@/components/toolwiz/SelectionToContext"), {
   ssr: false,
+  loading: () => null,
 });
-
 
 // ----------------------
 // 🧠 Type Definitions
@@ -28,17 +28,62 @@ interface ContextCard {
 
 type UpsertPayload = Omit<ContextCard, "id" | "createdAt"> & { id?: string };
 
+// Client-only hook for localStorage
+function useClientStorage<T>(key: string, initialValue: T) {
+  const [storedValue, setStoredValue] = useState<T>(initialValue);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    try {
+      const item = window.localStorage.getItem(key);
+      if (item) {
+        setStoredValue(JSON.parse(item));
+      }
+    } catch (error) {
+      console.warn(`Error reading localStorage key "${key}":`, error);
+    }
+  }, [key]);
+
+  const setValue = (value: T | ((val: T) => T)) => {
+    try {
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
+      if (isClient) {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      }
+    } catch (error) {
+      console.warn(`Error setting localStorage key "${key}":`, error);
+    }
+  };
+
+  return [storedValue, setValue] as const;
+}
+
+// Client-only ID generator
+function useClientId() {
+  const generateId = () => {
+    if (typeof window !== 'undefined' && window.crypto) {
+      return crypto.randomUUID();
+    }
+    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  };
+  return generateId;
+}
+
 export default function ClientPage(): JSX.Element {
-  const [cards, setCards] = useState<ContextCard[]>([]);
+  const [cards, setCards] = useClientStorage<ContextCard[]>("context-cards", []);
   const [search, setSearch] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [showEditor, setShowEditor] = useState(false);
   const [editingCard, setEditingCard] = useState<ContextCard | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+  const generateId = useClientId();
 
+  // Set mounted state to prevent SSR mismatches
   useEffect(() => {
-  console.log("✅ ClientPage hydrated successfully in browser");
+    setIsMounted(true);
   }, []);
-
 
   const features = [
     { icon: <FileText className="w-6 h-6" />, title: "Smart Organization", description: "Organize your thoughts, research, and ideas with customizable tags and categories." },
@@ -52,25 +97,6 @@ export default function ClientPage(): JSX.Element {
     { title: "For Learning", items: ["Create study notes", "Summarize articles", "Build knowledge base"] },
     { title: "For Productivity", items: ["Track project ideas", "Manage tasks", "Store important information"] }
   ];
-
-  // Load from localStorage (client-only)
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem("context-cards");
-      if (raw) setCards(JSON.parse(raw));
-    } catch (e) {
-      console.warn("Failed to load context-cards from localStorage", e);
-    }
-  }, []);
-
-  // Persist locally
-  useEffect(() => {
-    try {
-      localStorage.setItem("context-cards", JSON.stringify(cards));
-    } catch (e) {
-      console.warn("Failed to save context-cards", e);
-    }
-  }, [cards]);
 
   // Tags
   const tags = useMemo(() => {
@@ -98,7 +124,7 @@ export default function ClientPage(): JSX.Element {
       setCards((s) => s.map((c) => (c.id === payload.id ? { ...c, ...payload } : c)));
     } else {
       const newCard: ContextCard = {
-        id: crypto.randomUUID?.() ?? `${Date.now()}`,
+        id: generateId(),
         createdAt: new Date().toISOString(),
         title: payload.title,
         description: payload.description,
@@ -114,6 +140,8 @@ export default function ClientPage(): JSX.Element {
   }
 
   function exportJSON(): void {
+    if (!isMounted) return;
+    
     const payload = JSON.stringify(cards, null, 2);
     const blob = new Blob([payload], { type: "application/json" });
     const href = URL.createObjectURL(blob);
@@ -125,7 +153,7 @@ export default function ClientPage(): JSX.Element {
   }
 
   function importJSON(file: File | null): void {
-    if (!file) return;
+    if (!file || !isMounted) return;
     const reader = new FileReader();
     reader.onload = () => {
       try {
@@ -158,6 +186,8 @@ export default function ClientPage(): JSX.Element {
       onClose();
     }
 
+    if (!isMounted) return null;
+
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
         <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
@@ -181,8 +211,40 @@ export default function ClientPage(): JSX.Element {
     );
   }
 
+  // Don't render interactive content until mounted
+  if (!isMounted) {
+    return (
+      <div className="min-h-screen bg-white font-poppins">
+        <header className="border-b">
+          <div className="max-w-7xl mx-auto px-6 py-4">
+            <div className="flex items-center gap-4">
+              <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
+                <ArrowLeft className="w-4 h-4" />
+                Back to Tools
+              </Link>
+              <div className="w-px h-6 bg-gray-300" />
+              <span className="text-2xl">🧩</span>
+              <h1 className="text-2xl font-bold text-gray-900">Context Cards</h1>
+            </div>
+          </div>
+        </header>
+
+        <main className="max-w-7xl mx-auto px-6 py-12">
+          <div className="text-center mb-12">
+            <div className="text-6xl mb-4">🧩</div>
+            <h1 className="text-4xl font-extrabold text-gray-900 mb-4">Context Cards</h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">AI-powered contextual note cards for enhanced productivity and organization</p>
+          </div>
+          <div className="text-center py-12">
+            <div className="animate-pulse">Loading Context Cards...</div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   // ----------------------
-  // 🎨 UI (kept intact)
+  // 🎨 Full UI (only rendered on client)
   // ----------------------
   return (
     <div className="min-h-screen bg-white font-poppins">
