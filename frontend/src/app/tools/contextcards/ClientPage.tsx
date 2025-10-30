@@ -266,7 +266,7 @@ export default function ClientPage(): JSX.Element {
         <div className="text-center mb-12">
           <div className="text-6xl mb-4">🧩</div>
           <h1 className="text-4xl font-extrabold text-gray-900 mb-4">Context Cards</h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">AI-powered contextual note cards for enhanced productivity and organization</p>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">Capture and organize ideas instantly — Context Cards turn selected text into smart, structured notes.</p>
         </div>
 
         <div className="mb-12">
@@ -335,30 +335,6 @@ export default function ClientPage(): JSX.Element {
           {filtered.length === 0 && (<div className="text-center py-12 bg-gray-50 rounded-2xl border border-gray-200"><div className="text-4xl mb-4">📝</div><h3 className="text-xl font-semibold text-gray-900 mb-2">No context cards found</h3><p className="text-gray-600">Create your first card to get started with organized note-taking.</p></div>)}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 border border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Why Use Context Cards?</h2>
-            <div className="grid grid-cols-1 gap-6">{features.map((feature, index) => (<div key={index} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200"><div className="flex items-start space-x-4"><div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-lg flex items-center justify-center text-white">{feature.icon}</div><div><h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3><p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p></div></div></div>))}</div>
-          </div>
-
-          <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Perfect For</h2>
-            <div className="space-y-6">{benefits.map((benefit, index) => (<div key={index} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 hover:transform hover:-translate-y-1"><h3 className="font-semibold text-gray-900 mb-4 text-lg flex items-center"><div className="w-2 h-2 bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-full mr-3" />{benefit.title}</h3><ul className="space-y-2">{benefit.items.map((item, i) => (<li key={i} className="flex items-start text-sm text-gray-600"><span className="text-[#7C3AED] mr-2">•</span>{item}</li>))}</ul></div>))}</div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-2xl p-8 text-white mt-8">
-          <h2 className="text-2xl font-bold mb-6 text-center">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-            <div className="space-y-3"><div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto text-lg font-bold">1</div><h3 className="font-semibold">Capture Text</h3><p className="text-white/80 text-sm">Select text on any webpage or create manually</p></div>
-            <div className="space-y-3"><div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto text-lg font-bold">2</div><h3 className="font-semibold">Add Context</h3><p className="text-white/80 text-sm">Add title, description, and tags for organization</p></div>
-            <div className="space-y-3"><div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto text-lg font-bold">3</div><h3 className="font-semibold">Organize</h3><p className="text-white/80 text-sm">Use tags and search to find cards instantly</p></div>
-            <div className="space-y-3"><div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto text-lg font-bold">4</div><h3 className="font-semibold">Access Anywhere</h3><p className="text-white/80 text-sm">Your cards sync across browser and local storage</p></div>
-          </div>
-        </div>
-
-        <hr className="my-16 border-gray-200" />
-
         {/* ----------------------------------- */}
 {/* 🧩 INSTALL SECTION */}
 {/* ----------------------------------- */}
@@ -388,7 +364,7 @@ export default function ClientPage(): JSX.Element {
           <li>Download and unzip the <strong>contextcards-extension-v1.zip</strong> file.</li>
           <li>Open <strong>chrome://extensions/</strong> in your Chrome browser.</li>
           <li>Turn on <strong>Developer mode</strong> (top-right toggle).</li>
-          <li>Click <strong>“Load unpacked”</strong> and select the extracted folder.</li>
+          <li>Click <strong>“Load unpacked”</strong> and select the dist folder inside the extracted files.</li>
           <li>Once loaded, you’ll see the <strong>🧩 CardContext</strong> icon appear in your toolbar.</li>
         </ol>
       </div>
@@ -400,6 +376,30 @@ export default function ClientPage(): JSX.Element {
   </div>
 </section>
 
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Why Use Context Cards?</h2>
+            <div className="grid grid-cols-1 gap-6">{features.map((feature, index) => (<div key={index} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200"><div className="flex items-start space-x-4"><div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-lg flex items-center justify-center text-white">{feature.icon}</div><div><h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3><p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p></div></div></div>))}</div>
+          </div>
+
+          <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Perfect For</h2>
+            <div className="space-y-6">{benefits.map((benefit, index) => (<div key={index} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 hover:transform hover:-translate-y-1"><h3 className="font-semibold text-gray-900 mb-4 text-lg flex items-center"><div className="w-2 h-2 bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-full mr-3" />{benefit.title}</h3><ul className="space-y-2">{benefit.items.map((item, i) => (<li key={i} className="flex items-start text-sm text-gray-600"><span className="text-[#7C3AED] mr-2">•</span>{item}</li>))}</ul></div>))}</div>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-2xl p-8 text-white mt-8">
+          <h2 className="text-2xl font-bold mb-6 text-center">How It Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+            <div className="space-y-3"><div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto text-lg font-bold">1</div><h3 className="font-semibold">Capture Text</h3><p className="text-white/80 text-sm">Select text on any webpage or create manually</p></div>
+            <div className="space-y-3"><div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto text-lg font-bold">2</div><h3 className="font-semibold">Add Context</h3><p className="text-white/80 text-sm">Add title, description, and tags for organization</p></div>
+            <div className="space-y-3"><div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto text-lg font-bold">3</div><h3 className="font-semibold">Organize</h3><p className="text-white/80 text-sm">Use tags and search to find cards instantly</p></div>
+            <div className="space-y-3"><div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto text-lg font-bold">4</div><h3 className="font-semibold">Access Anywhere</h3><p className="text-white/80 text-sm">Your cards sync across browser and local storage</p></div>
+          </div>
+        </div>
+
+        <hr className="my-16 border-gray-200" />
       </main>
     </div>
   );

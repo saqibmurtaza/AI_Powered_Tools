@@ -9,7 +9,7 @@ export const siteData = {
         id: "contextcards",
         name: "Context Cards",
         link: "/tools/contextcards", // ✅ Already correct
-        description: "AI-powered contextual note cards for productivity.",
+        description: "Context Cards turn your reading into actionable, organized notes.",
         icon: "🧩",
       },
       {

@@ -57,22 +57,6 @@ export default function ToolsPage() {
           </p>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {features.map((feature, index) => (
-            <div 
-              key={index}
-              className="bg-gray-50 rounded-2xl p-6 border border-gray-200 text-center hover:shadow-lg transition-shadow duration-200"
-            >
-              <div className="w-12 h-12 bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-lg flex items-center justify-center text-white mx-auto mb-4">
-                {feature.icon}
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
-              <p className="text-gray-600 text-sm">{feature.description}</p>
-            </div>
-          ))}
-        </div>
-
         {/* Available Tools Section */}
         <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200 mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Available Tools</h2>
@@ -96,6 +80,24 @@ export default function ToolsPage() {
             ))}
           </div>
         </div>
+
+        {/* Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          {features.map((feature, index) => (
+            <div 
+              key={index}
+              className="bg-gray-50 rounded-2xl p-6 border border-gray-200 text-center hover:shadow-lg transition-shadow duration-200"
+            >
+              <div className="w-12 h-12 bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-lg flex items-center justify-center text-white mx-auto mb-4">
+                {feature.icon}
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
+              <p className="text-gray-600 text-sm">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+
+        
 
         {/* Coming Soon Section */}
         <div className="bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-2xl p-8 text-white">
