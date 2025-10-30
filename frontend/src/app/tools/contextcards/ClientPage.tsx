@@ -356,6 +356,50 @@ export default function ClientPage(): JSX.Element {
             <div className="space-y-3"><div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto text-lg font-bold">4</div><h3 className="font-semibold">Access Anywhere</h3><p className="text-white/80 text-sm">Your cards sync across browser and local storage</p></div>
           </div>
         </div>
+
+        <hr className="my-16 border-gray-200" />
+
+        {/* ----------------------------------- */}
+{/* 🧩 INSTALL SECTION */}
+{/* ----------------------------------- */}
+<section className="mt-16 bg-gray-50 border border-gray-200 rounded-2xl p-8">
+  <div className="max-w-5xl mx-auto text-center">
+    <h2 className="text-3xl font-bold text-gray-900 mb-4">
+      Install the Context Cards Chrome Extension
+    </h2>
+    <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+      Add the Context Cards Chrome extension to quickly capture text from any webpage
+      and save it directly into your workspace.
+    </p>
+
+    <div className="flex flex-col items-center gap-4">
+      <a
+        href="/downloads/contextcards-extension-v1.zip"
+        download
+        className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-[#4D0682] to-[#7C3AED] text-white font-semibold hover:opacity-90 transition-opacity"
+      >
+        <Download className="w-5 h-5" />
+        Download Extension (.zip)
+      </a>
+
+      <div className="bg-white border border-gray-300 rounded-xl p-6 shadow-sm mt-6 text-left max-w-2xl">
+        <h3 className="font-semibold text-gray-900 mb-3 text-lg">Manual Installation Guide</h3>
+        <ol className="list-decimal list-inside space-y-2 text-gray-700 text-sm">
+          <li>Download and unzip the <strong>contextcards-extension-v1.zip</strong> file.</li>
+          <li>Open <strong>chrome://extensions/</strong> in your Chrome browser.</li>
+          <li>Turn on <strong>Developer mode</strong> (top-right toggle).</li>
+          <li>Click <strong>“Load unpacked”</strong> and select the extracted folder.</li>
+          <li>Once loaded, you’ll see the <strong>🧩 CardContext</strong> icon appear in your toolbar.</li>
+        </ol>
+      </div>
+
+      <p className="text-gray-500 text-sm mt-4">
+        💡 Tip: Pin the extension for quick access from your Chrome toolbar.
+      </p>
+    </div>
+  </div>
+</section>
+
       </main>
     </div>
   );
