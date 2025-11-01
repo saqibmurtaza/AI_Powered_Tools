@@ -678,7 +678,7 @@ export default function ClientPage(): JSX.Element {
       <main className="pt-24"> {/* Added padding-top to account for fixed header */}
         <div className="max-w-7xl mx-auto px-6 py-12">
           {/* Tool Navigation */}
-          <div className="flex items-center gap-4 mb-8">
+          {/* <div className="flex items-center gap-4 mb-8">
             <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
               <ArrowLeft className="w-4 h-4" />
               Back to Tools
@@ -686,7 +686,7 @@ export default function ClientPage(): JSX.Element {
             <div className="w-px h-6 bg-gray-300" />
             <span className="text-2xl">🧩</span>
             <h1 className="text-2xl font-bold text-gray-900">Context Cards</h1>
-          </div>
+          </div> */}
 
           <div className="text-center mb-12">
             <div className="text-6xl mb-4">🧩</div>
