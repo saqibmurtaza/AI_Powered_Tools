@@ -1,6 +1,8 @@
 // frontend/src/app/tools/text-analyzer/page.tsx
 import Link from 'next/link';
 import { ArrowLeft, FileText, BarChart3, Zap, Clock, Target } from 'lucide-react';
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 export default function TextAnalyzerPage() {
   const features = [
@@ -43,7 +45,7 @@ export default function TextAnalyzerPage() {
 
   return (
     <div className="min-h-screen bg-white font-poppins">
-      {/* Header */}
+      <Header />
       <header className="border-b">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center gap-4">
@@ -163,6 +165,7 @@ export default function TextAnalyzerPage() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

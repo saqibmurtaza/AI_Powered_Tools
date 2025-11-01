@@ -53,6 +53,7 @@ export default function HomePage() {
           <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
             {siteData.toolwiz.subtitle}
           </p>
+          
 
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
             {siteData.toolwiz.tools.map((tool, i) => (
@@ -84,6 +85,23 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Adsterra AD Button */}
+
+      <div className="flex flex-col items-center gap-4 mb-3">
+        <div className="adsterra-monetization flex flex-col items-center gap-4 bg-purple-200 border border-gray-300 rounded-xl p-6 shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1 mt-6 text-left max-w-2xl">
+            <p className="monetization-note text-gray-600 text-sm max-w-sm text-center">
+                "We monetise this site with non-intrusive ads via Adsterra, which helps keep the tool free and maintained"
+            </p>
+            <button
+                className="smartlink-btn inline-flex items-center px-6 py-3 rounded-lg bg-gradient-to-r from-[#4D0682] to-[#7C3AED] text-white font-semibold hover:opacity-90 transition-opacity"
+                onClick={() => window.open('https://www.effectivegatecpm.com/y83y6xhhp?key=7438c8e0613e1d38069c5df5f868a451')}
+                title="Clicking supports our free service through non-intrusive ads"
+            >
+                Continue to Content
+            </button>
+        </div>
+      </div>
+
         {/* SMBOTICS Section */}
         <section className="py-16 px-6 md:px-12 lg:px-24 bg-gray-50 text-center">
           <h2 className="text-3xl md:text-4xl font-extrabold text-black">
@@ -103,27 +121,21 @@ export default function HomePage() {
                 variants={cardMotion}
                 transition={{ delay: i * 0.05 }}
               >
-                <Card className="overflow-hidden rounded-2xl shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1">
-                  <div className="h-28 bg-gradient-to-r from-[#4D0682] to-[#7C3AED] flex items-center justify-center">
-                    <div className="text-5xl text-white">{bot.icon}</div>
-                  </div>
-
-                  <CardContent className="p-6 text-left">
-                    <CardTitle className="text-lg text-black">{bot.name}</CardTitle>
-                    <CardDescription className="mt-2 text-sm text-gray-600">
-                      {bot.description}
-                    </CardDescription>
-                    <div className="mt-3">
-                      <Link
-                        href={bot.link}
-                        target="_blank"
-                        className="text-sm text-gray-600 hover:text-[var(--brand)]"
-                      >
-                        Visit Bot →
-                      </Link>
+                <Link href={bot.link} className="block">
+                  <Card className="overflow-hidden rounded-2xl shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1 cursor-pointer">
+                    <div className="h-28 bg-gradient-to-r from-[#4D0682] to-[#7C3AED] flex items-center justify-center">
+                      <div className="text-5xl text-white">{bot.icon}</div>
                     </div>
-                  </CardContent>
-                </Card>
+
+                    <CardContent className="p-6 text-left">
+                      <CardTitle className="text-lg text-black">{bot.name}</CardTitle>
+                      <CardDescription className="mt-2 text-sm text-gray-600">
+                        {bot.description}
+                      </CardDescription>
+                      {/* Removed the "Visit Bot" link and arrow */}
+                    </CardContent>
+                  </Card>
+                </Link>
               </motion.div>
             ))}
           </div>

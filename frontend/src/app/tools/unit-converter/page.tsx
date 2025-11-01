@@ -1,6 +1,8 @@
 // frontend/src/app/tools/unit-converter/page.tsx
 import Link from 'next/link';
 import { ArrowLeft, Ruler, Zap, Globe, Clock, Calculator } from 'lucide-react';
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 export default function UnitConverterPage() {
   const conversionTypes = [
@@ -47,7 +49,7 @@ export default function UnitConverterPage() {
 
   return (
     <div className="min-h-screen bg-white font-poppins">
-      {/* Header */}
+      <Header />
       <header className="border-b">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center gap-4">
@@ -170,6 +172,7 @@ export default function UnitConverterPage() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 // frontend/src/data/sections.ts
 export const siteData = {
   toolwiz: {
-    title: "ToolWiz — Useful Online Tools",
+    title: "SMTools — Useful Online Tools",
     subtitle:
       "Free, easy-to-use online tools to simplify your digital tasks and improve productivity",
     tools: [
@@ -38,29 +38,27 @@ export const siteData = {
   },
 
   smbotics: {
-    title: "SMBotics — AI Agents that Automate and Engage",
-    tagline:
-      "Custom conversational agents designed to automate customer interactions, boost engagement, and personalize user experiences.",
+    title: "SMBotics - AI Chatbots for Business",
+    tagline: "Intelligent chatbot solutions designed to automate customer service, boost engagement, and drive growth for small and medium businesses.",
     bots: [
       {
-        name: "Shopping Agent",
-        link: "https://saqibmurtaza-chainlit-shopping-agent.hf.space/",
-        description: "Helps customers explore products and recover abandoned carts.",
-        icon: "🛍️",
+        name: "Salon Booking Assistant",
+        description: "AI-powered appointment scheduling and customer service for salons. Streamline bookings, reduce no-shows, and enhance client experience.",
+        icon: "💇",
+        link: "/salon-booking-assistant" // Updated to internal page
+      },
+      {
+        name: "E-Commerce Shopping Assistant",
+        description: "Boost sales with personalized product recommendations and 24/7 customer support. Increase conversions and customer satisfaction.",
+        icon: "🛒",
+        link: "/ecommerce-shopping-assistant" // Updated to internal page
       },
       {
         name: "Student AI Chatbot",
-        link: "https://saqibmurtaza-student-ai-chatbot.hf.space/",
-        description: "Assists students with academic planning and learning support.",
+        description: "24/7 academic support with instant answers, curated resources, and educational videos. Perfect for students and educational institutions.",
         icon: "🎓",
-      },
-      {
-        name: "Salon Booking Bot (UK)",
-        link: "https://asuno-salon-england.onrender.com",
-        description: "Automates salon bookings and enhances client communication.",
-        icon: "💇‍♀️",
-      },
-      // future bots go here
-    ],
-  },
+        link: "/student-ai-chatbot" // Updated to internal page
+      }
+    ]
+  }
 };

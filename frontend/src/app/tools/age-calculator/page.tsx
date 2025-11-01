@@ -3,6 +3,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { ArrowLeft, Calculator, Calendar, Target, Zap } from 'lucide-react';
 
 export default function AgeCalculatorPage() {
@@ -73,7 +75,8 @@ export default function AgeCalculatorPage() {
 
   return (
     <div className="min-h-screen bg-white font-poppins">
-      {/* Header */}
+      <Header />
+      
       <header className="border-b">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center gap-4">
@@ -230,6 +233,7 @@ export default function AgeCalculatorPage() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

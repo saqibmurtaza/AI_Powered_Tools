@@ -8,6 +8,8 @@ import {Plus, Upload, Download, X, Search, Tag, FileText, Calendar, Zap, ArrowLe
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 // Load SelectionToContext only on client (avoid SSR/hydration issues)
 const SelectionToContext = dynamic(() => import("@/components/toolwiz/SelectionToContext"), {
@@ -248,6 +250,7 @@ export default function ClientPage(): JSX.Element {
   // ----------------------
   return (
     <div className="min-h-screen bg-white font-poppins">
+      <Header />
       <header className="border-b">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center gap-4">
@@ -348,6 +351,23 @@ export default function ClientPage(): JSX.Element {
       and save it directly into your workspace.
     </p>
 
+      {/* Adsterra AD Button */}
+
+      <div className="flex flex-col items-center gap-4 mb-3">
+        <div className="adsterra-monetization flex flex-col items-center gap-4 bg-purple-200 border border-gray-300 rounded-xl p-6 shadow-md mt-6 text-left max-w-2xl">
+            <p className="monetization-note text-gray-600 text-sm max-w-sm text-center">
+                "We monetise this site with non-intrusive ads via Adsterra, which helps keep the tool free and maintained"
+            </p>
+            <button
+                className="smartlink-btn inline-flex items-center px-6 py-3 rounded-lg bg-gradient-to-r from-[#4D0682] to-[#7C3AED] text-white font-semibold hover:opacity-90 transition-opacity"
+                onClick={() => window.open('https://www.effectivegatecpm.com/y83y6xhhp?key=7438c8e0613e1d38069c5df5f868a451')}
+                title="Clicking supports our free service through non-intrusive ads"
+            >
+                Continue to Content
+            </button>
+        </div>
+      </div>
+
     <div className="flex flex-col items-center gap-4">
       <a
         href="/downloads/contextcards-extension-v1.zip"
@@ -368,6 +388,8 @@ export default function ClientPage(): JSX.Element {
           <li>Once loaded, you’ll see the <strong>🧩 CardContext</strong> icon appear in your toolbar.</li>
         </ol>
       </div>
+
+
 
       <p className="text-gray-500 text-sm mt-4">
         💡 Tip: Pin the extension for quick access from your Chrome toolbar.
@@ -401,6 +423,7 @@ export default function ClientPage(): JSX.Element {
 
         <hr className="my-16 border-gray-200" />
       </main>
+      <Footer />
     </div>
   );
 }
