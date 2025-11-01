@@ -806,7 +806,7 @@ export default function ClientPage(): JSX.Element {
                     <li>Open <strong>chrome://extensions/</strong> in your Chrome browser.</li>
                     <li>Turn on <strong>Developer mode</strong> (top-right toggle).</li>
                     <li>Click <strong>“Load unpacked”</strong> and select the dist folder inside the extracted files.</li>
-                    <li>Once loaded, you'll see the <strong>🧩 CardContext</strong> icon appear in your toolbar.</li>
+                    <li>Once loaded, you&apos;ll see the <strong>🧩 CardContext</strong> icon appear in your toolbar.</li>
                   </ol>
                 </div>
 
