@@ -428,6 +428,7 @@
 //   );
 // }
 
+
 // frontend/src/app/tools/contextcards/ClientPage.tsx
 "use client";
 
@@ -435,10 +436,9 @@ import dynamic from "next/dynamic";
 import React, { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Plus, Upload, Download, X, Search, Tag, FileText, Calendar, Zap, ArrowLeft,
+  Plus, Upload, Download, X, Search, Tag, FileText, Calendar, Zap,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -650,7 +650,7 @@ export default function ClientPage(): JSX.Element {
       <div className="min-h-screen bg-white font-poppins">
         <Header />
         
-        <main className="pt-24"> {/* Added padding-top to account for fixed header */}
+        <main className="pt-24">
           <div className="max-w-7xl mx-auto px-6 py-12">
             <div className="text-center mb-12">
               <div className="text-6xl mb-4">🧩</div>
@@ -675,19 +675,8 @@ export default function ClientPage(): JSX.Element {
     <div className="min-h-screen bg-white font-poppins">
       <Header />
       
-      <main className="pt-24"> {/* Added padding-top to account for fixed header */}
+      <main className="pt-24">
         <div className="max-w-7xl mx-auto px-6 py-12">
-          {/* Tool Navigation */}
-          {/* <div className="flex items-center gap-4 mb-8">
-            <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors">
-              <ArrowLeft className="w-4 h-4" />
-              Back to Tools
-            </Link>
-            <div className="w-px h-6 bg-gray-300" />
-            <span className="text-2xl">🧩</span>
-            <h1 className="text-2xl font-bold text-gray-900">Context Cards</h1>
-          </div> */}
-
           <div className="text-center mb-12">
             <div className="text-6xl mb-4">🧩</div>
             <h1 className="text-4xl font-extrabold text-gray-900 mb-4">Context Cards</h1>
@@ -805,8 +794,8 @@ export default function ClientPage(): JSX.Element {
                     <li>Download and unzip the <strong>contextcards-extension-v1.zip</strong> file.</li>
                     <li>Open <strong>chrome://extensions/</strong> in your Chrome browser.</li>
                     <li>Turn on <strong>Developer mode</strong> (top-right toggle).</li>
-                    <li>Click <strong>“Load unpacked”</strong> and select the dist folder inside the extracted files.</li>
-                    <li>Once loaded, you&apos;ll see the <strong>🧩 CardContext</strong> icon appear in your toolbar.</li>
+                    <li>Click <strong>Load unpacked</strong> and select the dist folder inside the extracted files.</li>
+                    <li>Once loaded, you'll see the <strong>🧩 CardContext</strong> icon appear in your toolbar.</li>
                   </ol>
                 </div>
 
