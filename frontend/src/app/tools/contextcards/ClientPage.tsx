@@ -356,7 +356,7 @@ export default function ClientPage(): JSX.Element {
       <div className="flex flex-col items-center gap-4 mb-3">
         <div className="adsterra-monetization flex flex-col items-center gap-4 bg-purple-200 border border-gray-300 rounded-xl p-6 shadow-md mt-6 text-left max-w-2xl">
             <p className="monetization-note text-gray-600 text-sm max-w-sm text-center">
-                "We monetise this site with non-intrusive ads via Adsterra, which helps keep the tool free and maintained"
+                &quot;We monetise this site with non-intrusive ads via Adsterra, which helps keep the tool free and maintained&quot;
             </p>
             <button
                 className="smartlink-btn inline-flex items-center px-6 py-3 rounded-lg bg-gradient-to-r from-[#4D0682] to-[#7C3AED] text-white font-semibold hover:opacity-90 transition-opacity"

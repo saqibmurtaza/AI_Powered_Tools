@@ -59,7 +59,7 @@ export default function SalonBookingAssistantPage() {
               Salon Booking Assistant
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Transform your salon's front desk with AI-powered appointment management and customer service
+              Transform your salon&apos;s front desk with AI-powered appointment management and customer service
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a
