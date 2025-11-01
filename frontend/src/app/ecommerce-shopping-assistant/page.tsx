@@ -153,7 +153,7 @@ export default function EcommerceShoppingAssistantPage() {
               Experience the Future of Online Shopping
             </h2>
             <p className="text-lg text-gray-600 mb-8">
-              See how our AI assistant can transform your customer's shopping journey
+              See how our AI assistant can transform your customer&apos;s shopping journey
             </p>
             <div className="bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-2xl p-8 text-white">
               <h3 className="text-2xl font-bold mb-4">Live Demo Available</h3>
