@@ -7,9 +7,9 @@ export const siteData = {
     tools: [
       {
         id: "contextcards",
-        name: "Context Cards",
+        name: "MemorAI Cards",
         link: "/tools/contextcards", // ✅ Already correct
-        description: "Context Cards turn your reading into actionable, organized notes.",
+        description: "Your Second Brain for Everything You Read — AI that captures, summarizes, and remembers what matters",
         icon: "🧩",
       },
       {

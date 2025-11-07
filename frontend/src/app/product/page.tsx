@@ -15,7 +15,7 @@ const ContextCardsPage: React.FC = () => (
                 Introducing <span className={ACCENT_TEXT_COLOR_CLASS}>ContextCards</span>
             </h1>
             <p className="text-xl text-gray-600 mb-12 max-w-3xl">
-                ContextCards revolutionizes how you capture and retrieve information. It uses cutting-edge AI to instantly categorize, summarize, and link your notes to their relevant context. Stop searching. Start retrieving.
+                MemorAI Cards revolutionizes how you capture and retrieve information. It uses cutting-edge AI to instantly categorize, summarize, and link your notes to their relevant context. Stop searching. Start retrieving.
             </p>
 
             {/* Product Features Grid */}

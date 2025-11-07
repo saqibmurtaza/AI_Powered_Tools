@@ -39,46 +39,6 @@ AI_Powered_Tools/
 │   │   ├── vite-env.d.ts
 │   ├── tsconfig.json
 │   ├── vite.config.ts
-├── extension-fixed-backupwith1button-20251022/
-│   ├── dist/
-│   │   ├── background.js
-│   │   ├── background.js.map
-│   │   ├── contentScript.js
-│   │   ├── contentScript.js.map
-│   │   ├── icons/
-│   │   │   ├── card.jpg
-│   │   │   ├── icon128.png
-│   │   │   ├── icon16.png
-│   │   │   ├── icon48.png
-│   │   │   ├── icons/
-│   │   │   │   ├── card.jpg
-│   │   │   │   ├── icon128.png
-│   │   │   │   ├── icon16.png
-│   │   │   │   ├── icon48.png
-│   │   ├── popup.html
-│   │   ├── popup.js
-│   │   ├── popup.js.map
-│   ├── icons/
-│   │   ├── card.jpg
-│   │   ├── icon128.png
-│   │   ├── icon16.png
-│   │   ├── icon48.png
-│   ├── manifest.json
-│   ├── package.json
-│   ├── pnpm-lock.yaml
-│   ├── popup.html
-│   ├── scripts/
-│   │   ├── build.js
-│   │   ├── dev.js
-│   ├── src/
-│   │   ├── background.ts
-│   │   ├── contentScript.ts
-│   │   ├── popup.css
-│   │   ├── popup.ts
-│   │   ├── utils/
-│   │   │   ├── debounce.ts
-│   │   │   ├── selection.ts
-│   ├── tsconfig.json
 ├── extension-fixed-backupwith1buttonii-20251023 
 ├── frontend/
 │   ├── README.md
@@ -91,21 +51,38 @@ AI_Powered_Tools/
 │   ├── pnpm-lock.yaml
 │   ├── postcss.config.cjs
 │   ├── public/
+│   │   ├── downloads/
+│   │   │   ├── contextcards-extension-v1.zip
 │   │   ├── file.svg
 │   │   ├── globe.svg
 │   │   ├── logo.png
 │   │   ├── next.svg
 │   │   ├── vercel.svg
 │   │   ├── window.svg
+│   ├── render.yaml
 │   ├── src/
 │   │   ├── app/
 │   │   │   ├── about/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── api/
+│   │   │   │   ├── ai/
+│   │   │   │   │   ├── generate-card/
+│   │   │   │   │   │   ├── route.ts
+│   │   │   │   │   ├── suggest-tags/
+│   │   │   │   │   │   ├── route.ts
+│   │   │   │   ├── health/
+│   │   │   │   │   ├── route.ts
+│   │   │   ├── ecommerce-shopping-assistant/
 │   │   │   │   ├── page.tsx
 │   │   │   ├── favicon.ico
 │   │   │   ├── globals.css
 │   │   │   ├── layout.tsx
 │   │   │   ├── page.tsx
 │   │   │   ├── product/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── salon-booking-assistant/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── student-ai-chatbot/
 │   │   │   │   ├── page.tsx
 │   │   │   ├── tools/
 │   │   │   │   ├── [toolId]/
@@ -150,7 +127,7 @@ AI_Powered_Tools/
 │   │   │   ├── envCheck.ts
 │   ├── tailwind.config.ts
 │   ├── tsconfig.json
-├── frontend-backup-20251023/
+├── frontend-backup-20251105/
 │   ├── README.md
 │   ├── components.json
 │   ├── eslint.config.mjs
@@ -161,21 +138,48 @@ AI_Powered_Tools/
 │   ├── pnpm-lock.yaml
 │   ├── postcss.config.cjs
 │   ├── public/
+│   │   ├── downloads/
+│   │   │   ├── contextcards-extension-v1.zip
 │   │   ├── file.svg
 │   │   ├── globe.svg
+│   │   ├── logo.png
 │   │   ├── next.svg
 │   │   ├── vercel.svg
 │   │   ├── window.svg
+│   ├── render.yaml
 │   ├── src/
 │   │   ├── app/
+│   │   │   ├── about/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── api/
+│   │   │   │   ├── health/
+│   │   │   │   │   ├── route.ts
+│   │   │   ├── ecommerce-shopping-assistant/
+│   │   │   │   ├── page.tsx
 │   │   │   ├── favicon.ico
 │   │   │   ├── globals.css
 │   │   │   ├── layout.tsx
 │   │   │   ├── page.tsx
 │   │   │   ├── product/
 │   │   │   │   ├── page.tsx
+│   │   │   ├── salon-booking-assistant/
+│   │   │   │   ├── page.tsx
+│   │   │   ├── student-ai-chatbot/
+│   │   │   │   ├── page.tsx
 │   │   │   ├── tools/
+│   │   │   │   ├── [toolId]/
+│   │   │   │   │   ├── page.tsx
+│   │   │   │   ├── age-calculator/
+│   │   │   │   │   ├── page.tsx
 │   │   │   │   ├── contextcards/
+│   │   │   │   │   ├── ClientPage.tsx
+│   │   │   │   │   ├── ClientWrapper.tsx
+│   │   │   │   │   ├── ServerPage.tsx
+│   │   │   │   │   ├── page.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── text-analyzer/
+│   │   │   │   │   ├── page.tsx
+│   │   │   │   ├── unit-converter/
 │   │   │   │   │   ├── page.tsx
 │   │   ├── components/
 │   │   │   ├── ToolCard.tsx
@@ -184,6 +188,7 @@ AI_Powered_Tools/
 │   │   │   │   ├── Header.tsx
 │   │   │   ├── toolwiz/
 │   │   │   │   ├── ContextCards.tsx
+│   │   │   │   ├── ContextCardsClientWrapper.tsx
 │   │   │   │   ├── SelectionToContext.tsx
 │   │   │   ├── ui/
 │   │   │   │   ├── badge.tsx
@@ -194,6 +199,7 @@ AI_Powered_Tools/
 │   │   │   ├── GlobalContextCaptureProvider.tsx
 │   │   ├── data/
 │   │   │   ├── sections.ts
+│   │   │   ├── tools.ts
 │   │   ├── hooks/
 │   │   │   ├── useTextSelection.ts
 │   │   ├── lib/
@@ -204,7 +210,6 @@ AI_Powered_Tools/
 │   ├── tailwind.config.ts
 │   ├── tsconfig.json
 ├── package.json
-├── pnpm-lock.yaml
 ├── shared/
 │   ├── dist/
 │   │   ├── chunk-L3UBYPSM.js

@@ -16,7 +16,7 @@ import {
 /**
  * ✅ Restored version — original layout, animations, and design.
  * ToolWiz and SMBotics cards display correctly.
- * No context-capture or ContextCards logic included.
+ * No context-capture or MemorAICards logic included.
  */
 
 export default function HomePage() {
