@@ -113,23 +113,14 @@
 //   };
 // }
 
+
+
 // frontend/src/app/tools/[toolId]/page.tsx
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { siteData } from '@/data/sections';
-import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
-
-// Dynamically import ContextCards with no SSR
-const ContextCardsClient = dynamic(() => import('./ContextCardsClient'), {
-  ssr: false,
-  loading: () => (
-    <div className="text-center py-12">
-      <div className="animate-pulse">Loading Context Cards...</div>
-    </div>
-  )
-});
+import ContextCardsWrapper from './ContextCardsWrapper';
 
 interface PageProps {
   params: {
@@ -182,13 +173,7 @@ export default function ToolPage({ params }: PageProps) {
           )}
           
           {params.toolId === 'contextcards' && (
-            <Suspense fallback={
-              <div className="text-center py-12">
-                <div className="animate-pulse">Loading Context Cards...</div>
-              </div>
-            }>
-              <ContextCardsClient />
-            </Suspense>
+            <ContextCardsWrapper />
           )}
           
           {/* For tools that don't have specific implementations yet */}
