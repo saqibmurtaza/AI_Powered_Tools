@@ -18,6 +18,8 @@ const rootDir = path.join(__dirname, '..');
 const distDir = path.join(rootDir, 'dist');
 const srcDir = path.join(rootDir, 'src');
 const iconsDir = path.join(rootDir, 'icons');
+
+// ✅ CORRECTED: popup.html is in the ROOT directory, not src
 const popupHtmlSrc = path.join(rootDir, 'popup.html');
 const popupHtmlDest = path.join(distDir, 'popup.html');
 const manifestSrc = path.join(rootDir, 'manifest.json');
@@ -32,7 +34,9 @@ if (!fs.existsSync(distDir)) {
 // ✅ Automatically inject .env values
 const defineEnv = {
   'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(process.env.VITE_SUPABASE_URL || ''),
-  'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY || '')
+  'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY || ''),
+  'import.meta.env.VITE_AI_API_KEY': JSON.stringify(process.env.VITE_AI_API_KEY || ''),
+  'import.meta.env.VITE_AI_BASE_URL': JSON.stringify(process.env.VITE_AI_BASE_URL || '')
 };
 
 const baseConfig = {
@@ -42,7 +46,14 @@ const baseConfig = {
   platform: 'browser',
   target: 'es2020',
   format: 'esm',
-  define: defineEnv
+  define: defineEnv,
+  // ✅ Add TypeScript support
+  loader: {
+    '.ts': 'ts',
+    '.tsx': 'tsx'
+  },
+  // ✅ Add proper TypeScript config
+  tsconfig: path.join(rootDir, 'tsconfig.json')
 };
 
 const configs = [
@@ -66,38 +77,107 @@ const configs = [
 async function build() {
   try {
     console.log('🔨 Building extension files...');
-    for (const config of configs) {
-      console.log(`📦 Building: ${path.basename(config.entryPoints[0])}`);
-      await esbuild.build(config);
-      console.log(`✅ Built: ${path.basename(config.entryPoints[0])} → ${path.basename(config.outfile)}`);
+    
+    // ✅ Validate source files exist before building
+    const requiredFiles = [
+      { path: path.join(srcDir, 'background.ts'), name: 'background.ts' },
+      { path: path.join(srcDir, 'contentScript.ts'), name: 'contentScript.ts' },
+      { path: path.join(srcDir, 'popup.ts'), name: 'popup.ts' },
+      { path: popupHtmlSrc, name: 'popup.html' }, // Now correctly points to root
+      { path: manifestSrc, name: 'manifest.json' }
+    ];
+
+    for (const file of requiredFiles) {
+      if (!fs.existsSync(file.path)) {
+        console.error(`❌ Missing file: ${file.path}`);
+        throw new Error(`Missing required file: ${file.name} at ${file.path}`);
+      }
     }
 
-    // Copy manifest.json
+    console.log('✅ All required files found');
+
+    // ✅ Build TypeScript files
+    for (const config of configs) {
+      const entryName = path.basename(config.entryPoints[0]);
+      console.log(`📦 Building: ${entryName}`);
+      
+      const result = await esbuild.build(config);
+      if (result.errors.length > 0) {
+        console.error(`❌ Build errors in ${entryName}:`, result.errors);
+        throw new Error(`Failed to build ${entryName}`);
+      }
+      
+      console.log(`✅ Built: ${entryName} → ${path.basename(config.outfile)}`);
+    }
+
+    // ✅ Copy manifest.json
     if (fs.existsSync(manifestSrc)) {
       fs.copyFileSync(manifestSrc, manifestDest);
       console.log('📋 Copied manifest.json → dist/');
+      
+      // Verify manifest structure
+      try {
+        const manifestContent = fs.readFileSync(manifestDest, 'utf8');
+        const manifest = JSON.parse(manifestContent);
+        console.log('✅ Manifest validation passed');
+      } catch (error) {
+        console.warn('⚠️ Manifest JSON might be invalid');
+      }
+    } else {
+      throw new Error('manifest.json not found in root directory');
     }
 
-    // Copy popup.html
+    // ✅ Copy popup.html (from root directory)
     if (fs.existsSync(popupHtmlSrc)) {
-      fs.copyFileSync(popupHtmlSrc, popupHtmlDest);
+      let popupContent = fs.readFileSync(popupHtmlSrc, 'utf8');
+      
+      // Ensure popup.html references the correct JS files
+      if (!popupContent.includes('popup.js')) {
+        console.warn('⚠️ popup.html might not reference popup.js correctly');
+      }
+      
+      fs.writeFileSync(popupHtmlDest, popupContent);
       console.log('📄 Copied popup.html → dist/');
+    } else {
+      throw new Error('popup.html not found in root directory');
     }
 
-    // Copy icons
+    // ✅ Copy icons
     if (fs.existsSync(iconsDir)) {
       const distIconsDir = path.join(distDir, 'icons');
-      fs.mkdirSync(distIconsDir, { recursive: true });
-      fs.readdirSync(iconsDir).forEach((file) => {
-        fs.copyFileSync(path.join(iconsDir, file), path.join(distIconsDir, file));
-      });
-      console.log('🖼️ Copied icons → dist/icons/');
+      if (!fs.existsSync(distIconsDir)) {
+        fs.mkdirSync(distIconsDir, { recursive: true });
+      }
+      
+      const iconFiles = fs.readdirSync(iconsDir);
+      if (iconFiles.length === 0) {
+        console.warn('⚠️ No icon files found in icons directory');
+      } else {
+        iconFiles.forEach((file) => {
+          fs.copyFileSync(path.join(iconsDir, file), path.join(distIconsDir, file));
+        });
+        console.log(`🖼️ Copied ${iconFiles.length} icons → dist/icons/`);
+      }
+    } else {
+      console.warn('⚠️ Icons directory not found');
+    }
+
+    // ✅ Final verification
+    const distFiles = fs.readdirSync(distDir);
+    const requiredDistFiles = ['background.js', 'contentScript.js', 'popup.js', 'popup.html', 'manifest.json'];
+    
+    const missingFiles = requiredDistFiles.filter(file => !distFiles.includes(file));
+    if (missingFiles.length > 0) {
+      console.error('❌ Missing files in dist:', missingFiles);
+      console.log('📁 Actual dist files:', distFiles);
+      throw new Error(`Missing files in dist: ${missingFiles.join(', ')}`);
     }
 
     console.log('🎉 Extension build complete!');
-    console.log('📁 Files in dist/:', fs.readdirSync(distDir));
+    console.log('📁 Files in dist/:', distFiles);
+    
   } catch (error) {
-    console.error('❌ Build failed:', error);
+    console.error('❌ Build failed:', error.message);
     process.exit(1);
   }
 }

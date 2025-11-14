@@ -22,7 +22,7 @@
       color: var(--text-main);
       margin: 0;
       padding: 16px;
-      width: 340px;
+      width: 380px;
       box-sizing: border-box;
     }
 
@@ -35,18 +35,99 @@
       letter-spacing: 0.3px;
     }
 
+    /* AI Summary Section */
+    .ai-summary-section {
+      margin-bottom: 16px;
+    }
+
+    .ai-summary {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: var(--radius);
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .summary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .summary-header h3 {
+      font-size: 0.9em;
+      font-weight: 600;
+      color: #0369a1;
+      margin: 0;
+    }
+
+    .refresh-btn {
+      background: none;
+      border: none;
+      font-size: 1em;
+      cursor: pointer;
+      color: #64748b;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .refresh-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .summary-content {
+      font-size: 0.8em;
+      line-height: 1.4;
+      color: #475569;
+    }
+
+    .summary-placeholder {
+      font-size: 0.8em;
+      color: #94a3b8;
+      text-align: center;
+      font-style: italic;
+      margin: 0;
+    }
+
+    /* Cards Section Header */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-header h2 {
+      font-size: 1em;
+      font-weight: 600;
+      color: var(--text-main);
+      margin: 0;
+    }
+
+    .cards-count {
+      background: var(--brand-blue);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75em;
+      font-weight: 500;
+    }
+
     #cards {
       display: flex;
       flex-direction: column;
       gap: 10px;
       margin-bottom: 12px;
+      max-height: 300px;
+      overflow-y: auto;
     }
 
     .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: var(--radius);
-      padding: 10px 12px;
+      padding: 12px;
       box-shadow: var(--shadow);
       transition: transform 0.1s ease, box-shadow 0.2s ease;
     }
@@ -56,12 +137,50 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     }
 
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 0.95em;
+      font-weight: 600;
+      color: var(--text-main);
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .card-description {
+      font-size: 0.85em;
+      color: var(--text-subtle);
+      font-style: italic;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
     .card-content {
       font-size: 0.92em;
       line-height: 1.5;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       color: var(--text-main);
       word-break: break-word;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .tag {
+      background: #e5e7eb;
+      color: #374151;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75em;
     }
 
     .card-meta {
@@ -77,6 +196,12 @@
       margin-top: 16px;
     }
 
+    .button-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
     button {
       background: var(--brand-blue);
       color: #fff;
@@ -84,26 +209,68 @@
       padding: 10px;
       border-radius: var(--radius);
       cursor: pointer;
-      width: 100%;
       font-weight: 500;
       transition: background 0.2s ease;
+      flex: 1;
     }
 
     button:hover {
       background: var(--brand-blue-dark);
     }
+
+    #exportBtn {
+      background: #10b981;
+    }
+
+    #exportBtn:hover {
+      background: #059669;
+    }
+
+    #clearBtn {
+      background: #ef4444;
+    }
+
+    #clearBtn:hover {
+      background: #dc2626;
+    }
+
+    /* Scrollbar */
+    #cards::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    #cards::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+
+    #cards::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 2px;
+    }
   </style>
 </head>
 <body>
-  <!-- <h1>🧩 CardContext</h1> -->
-   <h1>
-    <img src="icons/card.jpg" alt="CardContext" style="width:24px;height:16px;vertical-align:middle;margin-right:8px;">
-    CardContext
-  </h1>
+  <h1>CardContext</h1>
+
+  <div class="ai-summary-section">
+    <div id="aiSummary" class="ai-summary">
+      <div class="summary-placeholder">Select text and use right-click → "Save to CardContext" to create cards</div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <h2>Saved Cards</h2>
+    <span id="cardsCount" class="cards-count">0</span>
+  </div>
 
   <div id="cards" class="empty">Loading cards...</div>
-  <button id="clearBtn">Clear All</button>
+  
+  <div class="button-group">
+    <button id="exportBtn">Export Cards</button>
+    <button id="clearBtn">Clear All</button>
+  </div>
 
-  <script src="popup.js"></script>
+  <!-- Use the compiled TypeScript file instead of inline script -->
+  <script type="module" src="popup.js"></script>
 </body>
 </html>

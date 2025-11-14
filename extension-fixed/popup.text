@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CardContext</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <div class="popup-header">
+      <img src="icons/card.jpg" alt="CardContext" class="popup-logo">
+      <h1 class="popup-title">CardContext</h1>
+    </div>
+
+    <!-- AI Summary Section -->
+    <div class="ai-summary-section">
+      <div id="aiSummary" class="ai-summary">
+        <div class="summary-placeholder">Select text to create cards and generate AI summary</div>
+      </div>
+    </div>
+
+    <!-- Cards Section -->
+    <div class="cards-section">
+      <div class="section-header">
+        <h2>Saved Cards</h2>
+        <span id="cardsCount" class="cards-count">0</span>
+      </div>
+      <div id="cards" class="cards-grid">
+        <div class="loading">
+          <div class="loader"></div>
+          <div class="loading-text">Loading cards...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clear Button -->
+    <button id="clearBtn" class="clear-btn">Clear All Cards</button>
+  </div>
+
+  <script type="module" src="popup.ts"></script>
+</body>
+</html>
