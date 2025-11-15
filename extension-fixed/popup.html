@@ -313,6 +313,86 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+  /* AI Summary specific styles */
+  .card-ai-summary {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin: 8px 0;
+      font-size: 0.85em;
+      line-height: 1.4;
+  }
+
+  .ai-config-section {
+      transition: all 0.3s ease;
+  }
+
+  .ai-config-section input {
+      font-size: 0.8em;
+  }
+
+  .ai-config-section label {
+      font-weight: 500;
+  }
+
+  /* Card Selection Styles */
+.card-selection {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    flex: 1;
+}
+
+.card-checkbox {
+    margin-top: 2px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    gap: 8px;
+}
+
+.selection-info {
+    background: #e0f2fe;
+    border: 1px solid #bae6fd;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin: 8px 0;
+    font-size: 0.8em;
+    color: #0369a1;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Collective Summary Styles */
+.collective-summary-display {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 12px 0;
+}
+
+.collective-summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.collective-summary-header h3 {
+    color: #92400e;
+    margin: 0;
+    font-size: 0.95em;
+}
+
+
+
   </style>
 </head>
 <body>
@@ -334,6 +414,38 @@
   <div class="button-group">
     <button id="exportBtn">Export Cards</button>
     <button id="clearBtn">Clear All</button>
+  </div>
+
+  <!-- AI Configuration Section -->
+  <div class="ai-config-section" style="margin-bottom: 16px; padding: 12px; background: #f0f9ff; border-radius: 8px; border: 1px solid #bae6fd;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+      <h3 style="font-size: 0.9em; font-weight: 600; color: #0369a1; margin: 0;">AI Settings</h3>
+      <button id="toggleAISettings" style="background: none; border: none; cursor: pointer; font-size: 0.9em;">⚙️</button>
+    </div>
+    
+    <div id="aiSettings" style="display: none;">
+      <div style="margin-bottom: 8px;">
+        <label style="font-size: 0.8em; color: #475569; display: block; margin-bottom: 4px;">API Base URL:</label>
+        <input type="text" id="aiBaseUrl" placeholder="https://api.gemini.com/v1" 
+              style="width: 100%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.8em;">
+      </div>
+      <div style="margin-bottom: 8px;">
+        <label style="font-size: 0.8em; color: #475569; display: block; margin-bottom: 4px;">API Key:</label>
+        <input type="password" id="aiApiKey" placeholder="Your API key" 
+              style="width: 100%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.8em;">
+      </div>
+      <div style="margin-bottom: 8px;">
+        <label style="font-size: 0.8em; color: #475569; display: block; margin-bottom: 4px;">Model:</label>
+        <input type="text" id="aiModel" placeholder="gemini-pro" 
+              style="width: 100%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.8em;" 
+              value="gemini-pro">
+      </div>
+      <button id="saveAISettings" style="background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8em; width: 100%;">Save Settings</button>
+    </div>
+    
+    <div id="aiStatus" style="font-size: 0.8em; color: #475569; text-align: center;">
+      AI: <span id="aiStatusText">Configure settings</span>
+    </div>
   </div>
 
   <!-- Use the compiled TypeScript file instead of inline script -->
