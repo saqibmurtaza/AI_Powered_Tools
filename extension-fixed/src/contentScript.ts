@@ -115,13 +115,20 @@ const handleSelectionChange = debounce((e: MouseEvent) => {
     let tagsInput = prompt("Enter tags (comma-separated, optional):", "") || "";
     const tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag);
 
+    // Generate unique ID
+    const cardId = 'card-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+    
     const cardData = {
+      id: cardId,
       title,
       content: selectedText,
       description,
       tags,
       sourceUrl: window.location.href,
+      source: window.location.href,
       timestamp: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      selected: false,
       type: 'text' as const,
       metadata: {
         wordCount: selectedText.split(/\s+/).length,
