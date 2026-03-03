@@ -34,6 +34,13 @@ export const siteData = {
         description: "Convert between different units and measurements.",
         icon: "📏",
       },
+      {
+        id: "hr-tenure-calculator",
+        name: "HR Tenure Calculator",
+        link: "/tools/hr-tenure-calculator",
+        description: "Calculate employee tenure and severance packages.",
+        icon: "💼",
+      },
     ],
   },
 

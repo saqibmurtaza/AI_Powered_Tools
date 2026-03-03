@@ -37,5 +37,14 @@ export const tools: Tool[] = [
     category: "text",
     status: "coming-soon"
   },
-  // Add more tools here matching your current ones
+  {
+    id: 'hr-tenure-calculator',
+    name: 'HR Tenure Calculator',
+    description: 'Calculate employee tenure and severance packages',
+    icon: 'Briefcase',
+    category: 'Business',
+    href: '/tools/hr-tenure-calculator',
+    status: 'active'
+  }
+// Add more tools here matching your current ones
 ];
