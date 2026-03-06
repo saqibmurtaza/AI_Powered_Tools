@@ -20,6 +20,15 @@ export const tools: Tool[] = [
     status: "active"
   },
   {
+    id: "checktop",
+    name: "CheckTop Laptop Diagnostic",
+    description: "Test laptop health before buying or selling. Checks battery, CPU, storage, display, ports & audio.",
+    icon: "🖥️",
+    href: "/tools/checktop",
+    category: "utilities",
+    status: "active"
+  },
+  {
     id: "age-calculator",
     name: "Age Calculator",
     description: "Calculate exact age between dates",

@@ -13,6 +13,13 @@ export const siteData = {
         icon: "🧩",
       },
       {
+        id: "checktop",
+        name: "CheckTop Laptop Diagnostic",
+        link: "/tools/checktop",
+        description: "Test any laptop's health before buying or selling. Runs completely offline with detailed hardware reports.",
+        icon: "🖥️",
+      },
+      {
         id: "agecalculator",
         name: "Age Calculator",
         link: "/tools/age-calculator", // ✅ Fixed: changed from "/age-calculator" to "/tools/age-calculator"
