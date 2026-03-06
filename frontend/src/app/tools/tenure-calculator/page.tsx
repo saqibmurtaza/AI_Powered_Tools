@@ -471,7 +471,7 @@ export default function TenureCalculatorPage() {
         <div className="bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-2xl p-8 text-white text-center">
           <h2 className="text-2xl font-bold mb-4">Smart Tools for Modern Professionals</h2>
           <p className="text-white/80 text-sm max-w-2xl mx-auto">
-            Whether you're calculating years of service for a retirement plan or measuring a project's timeline, our tenure calculator provides the accurate data you need for your documentation.
+            Whether you&apos;re calculating years of service for a retirement plan or measuring a project&apos;s timeline, our tenure calculator provides the accurate data you need for your documentation.
           </p>
         </div>
       </main>
