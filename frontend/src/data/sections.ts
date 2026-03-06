@@ -1,7 +1,7 @@
 // frontend/src/data/sections.ts
 export const siteData = {
   toolwiz: {
-    title: "SMTools — Useful Online Tools",
+    title: "SMTools — Smart Digital Tools",
     subtitle:
       "Free, easy-to-use online tools to simplify your digital tasks and improve productivity",
     tools: [
@@ -20,27 +20,7 @@ export const siteData = {
         icon: "🧮",
       },
       // future tools: just add objects here and they appear across site.
-      {
-        id: "textanalyzer",
-        name: "Text Analyzer",
-        link: "/tools/text-analyzer",
-        description: "Analyze and process text content with AI.",
-        icon: "📊",
-      },
-      {
-        id: "unitconverter", 
-        name: "Unit Converter",
-        link: "/tools/unit-converter",
-        description: "Convert between different units and measurements.",
-        icon: "📏",
-      },
-      {
-        id: "hr-tenure-calculator",
-        name: "HR Tenure Calculator",
-        link: "/tools/hr-tenure-calculator",
-        description: "Calculate employee tenure and severance packages.",
-        icon: "💼",
-      },
+      
     ],
   },
 

@@ -28,23 +28,6 @@ export const tools: Tool[] = [
     category: "calculators",
     status: "active"
   },
-  {
-    id: "text-analyzer",
-    name: "Text Analyzer",
-    description: "Analyze and process text content",
-    icon: "📊",
-    href: "/tools/text-analyzer", 
-    category: "text",
-    status: "coming-soon"
-  },
-  {
-    id: 'hr-tenure-calculator',
-    name: 'HR Tenure Calculator',
-    description: 'Calculate employee tenure and severance packages',
-    icon: 'Briefcase',
-    category: 'Business',
-    href: '/tools/hr-tenure-calculator',
-    status: 'active'
-  }
+ 
 // Add more tools here matching your current ones
 ];
