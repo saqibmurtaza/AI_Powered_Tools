@@ -20,10 +20,10 @@ export const siteData = {
         icon: "🖥️",
       },
       {
-        id: "agecalculator",
-        name: "Age Calculator",
+        id: "tenurecalculator",
+        name: "Work Tenure Calculator",
         link: "/tools/tenure-calculator", // ✅ Fixed: changed from "/tenure-calculator" to "/tools/tenure-calculator"
-        description: "Accurate age calculator with time and date precision.",
+        description: "Determine exact service duration for HR analytics and career planning",
         icon: "🧮",
       },
       // future tools: just add objects here and they appear across site.

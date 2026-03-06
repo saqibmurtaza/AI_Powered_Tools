@@ -7,8 +7,8 @@ export default function ToolsPage() {
   const features = [
     {
       icon: <Zap className="w-6 h-6" />,
-      title: "AI-Powered",
-      description: "Leveraging artificial intelligence to enhance your productivity and simplify complex tasks."
+      title: "Smart Digital Tools",
+      description: "Designed to enhance your productivity and simplify complex tasks.."
     },
     {
       icon: <Cpu className="w-6 h-6" />,
