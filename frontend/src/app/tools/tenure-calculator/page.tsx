@@ -248,12 +248,6 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { ArrowLeft, Briefcase, Clock, FileText, ShieldCheck, TrendingUp } from 'lucide-react';
 
-export const metadata = {
-  title: 'Work Tenure Calculator | Calculate Years of Service & Experience',
-  description: 'Free online tool to calculate exact work tenure, years of service, and professional experience. Perfect for HR audits, resumes, and project timelines.',
-  keywords: ['tenure calculator', 'years of service', 'work experience calculator', 'employment duration', 'HR tools', 'seniority tracker'],
-};
-
 export default function TenureCalculatorPage() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);

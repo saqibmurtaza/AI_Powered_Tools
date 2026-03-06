@@ -22,7 +22,7 @@ export const siteData = {
       {
         id: "agecalculator",
         name: "Age Calculator",
-        link: "/tools/age-calculator", // ✅ Fixed: changed from "/age-calculator" to "/tools/age-calculator"
+        link: "/tools/tenure-calculator", // ✅ Fixed: changed from "/tenure-calculator" to "/tools/tenure-calculator"
         description: "Accurate age calculator with time and date precision.",
         icon: "🧮",
       },

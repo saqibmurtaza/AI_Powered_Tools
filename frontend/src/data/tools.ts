@@ -29,11 +29,11 @@ export const tools: Tool[] = [
     status: "active"
   },
   {
-    id: "age-calculator",
-    name: "Age Calculator",
-    description: "Calculate exact age between dates",
+    id: "tenure-calculator",
+    name: "Work Tenure Calculator",
+    description: "Calculate exact work tenure, years of service, and professional experience.",
     icon: "📅",
-    href: "/tools/age-calculator",
+    href: "/tools/tenure-calculator",
     category: "calculators",
     status: "active"
   },
