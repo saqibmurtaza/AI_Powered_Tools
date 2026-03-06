@@ -1,13 +1,18 @@
 "use client";
 
+
+
+
 import { useState } from 'react';
 import Link from 'next/link';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { ArrowLeft, Download, Battery, Cpu, HardDrive, Monitor, Headphones, Activity, CheckCircle, Shield, Wifi, Zap } from 'lucide-react';
 
+
 export default function CheckTopPage() {
   const [downloaded, setDownloaded] = useState(false);
+
 
   const features = [
     {
@@ -17,7 +22,7 @@ export default function CheckTopPage() {
     },
     {
       icon: <Cpu className="w-6 h-6" />,
-      title: "⚡ CPU & Performance", 
+      title: "⚡ CPU & Performance",
       description: "Identifies throttling, overheating, and benchmarks real-world performance"
     },
     {
@@ -42,6 +47,7 @@ export default function CheckTopPage() {
     }
   ];
 
+
   const steps = [
     {
       number: "1",
@@ -49,7 +55,7 @@ export default function CheckTopPage() {
       description: "Download the CheckTop Agent (5MB) - takes less than 1 minute"
     },
     {
-      number: "2", 
+      number: "2",
       title: "Run",
       description: "Double-click the downloaded file to run diagnostics"
     },
@@ -60,21 +66,23 @@ export default function CheckTopPage() {
     }
   ];
 
+
   const handleDownload = () => {
     // Trigger download and show feedback
     setDownloaded(true);
     setTimeout(() => setDownloaded(false), 3000);
   };
 
+
   return (
     <div className="min-h-screen bg-white font-poppins">
       <Header />
-      
+     
       {/* Header */}
       <header className="border-b">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center gap-4">
-            <Link 
+            <Link
               href="/tools"
               className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
             >
@@ -88,6 +96,7 @@ export default function CheckTopPage() {
         </div>
       </header>
 
+
       <main className="max-w-6xl mx-auto px-6 py-12">
         {/* Hero Section */}
         <div className="text-center mb-12">
@@ -98,6 +107,7 @@ export default function CheckTopPage() {
           </p>
         </div>
 
+
         {/* Download Card */}
         {/* Download Card - UPDATE THIS SECTION */}
         <div className="bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-2xl p-8 text-white mb-12">
@@ -106,9 +116,9 @@ export default function CheckTopPage() {
             <p className="text-white/90 mb-8">
               Download the CheckTop Agent, run it, and get your complete laptop health report in 2 minutes
             </p>
-            
+           
             {/* CHANGE THIS LINK */}
-            <a 
+            <a
               href="https://github.com/saqibmurtaza/CheckTop_Diagnostic/releases/tag/v1.0.0"
               target="_blank"  // Opens in new tab
               rel="noopener noreferrer"  // Security best practice
@@ -118,27 +128,28 @@ export default function CheckTopPage() {
               <Download className="w-5 h-5" />
               ⬇️ Download CheckTop Agent (Windows)
             </a>
-            
+           
             {downloaded && (
               <div className="mt-4 text-green-300 flex items-center justify-center gap-2">
                 <CheckCircle className="w-5 h-5" />
                 Redirecting to GitHub download page...
               </div>
             )}
-            
+           
             <p className="text-white/80 text-sm mt-4">
               Windows 10 / 11 • 5 MB • Takes less than 1 minute
             </p>
           </div>
         </div>
 
+
         {/* Add this after the download card */}
         <div className="text-center mb-8">
           <p className="text-sm text-gray-500">
             📦 Download hosted on{' '}
-            <a 
-              href="https://github.com/saqibmurtaza/CheckTop_Diagnostic" 
-              target="_blank" 
+            <a
+              href="https://github.com/saqibmurtaza/CheckTop_Diagnostic"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-[#4D0682] hover:underline"
             >
@@ -146,6 +157,7 @@ export default function CheckTopPage() {
             </a>
           </p>
         </div>
+
 
         {/* How It Works */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -160,6 +172,7 @@ export default function CheckTopPage() {
           ))}
         </div>
 
+
         {/* Privacy Notice */}
         <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-12 flex items-center gap-3">
           <Shield className="w-5 h-5 text-green-600 flex-shrink-0" />
@@ -168,12 +181,13 @@ export default function CheckTopPage() {
           </p>
         </div>
 
+
         {/* What CheckTop Checks */}
         <h2 className="text-2xl font-bold text-gray-900 mb-6">What CheckTop Checks</h2>
-        
+       
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {features.map((feature, index) => (
-            <div 
+            <div
               key={index}
               className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 hover:transform hover:-translate-y-1"
             >
@@ -190,23 +204,24 @@ export default function CheckTopPage() {
           ))}
         </div>
 
+
         {/* Why Use CheckTop */}
         <div className="bg-gray-50 rounded-2xl p-8 border mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Why Use CheckTop?</h2>
-          
+         
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white rounded-xl p-6 border text-center">
               <div className="text-3xl mb-3">🛡️</div>
               <h3 className="font-semibold text-gray-900 mb-2">Buy With Confidence</h3>
               <p className="text-sm text-gray-600">Test any laptop before purchase to avoid hidden problems</p>
             </div>
-            
+           
             <div className="bg-white rounded-xl p-6 border text-center">
               <div className="text-3xl mb-3">💰</div>
               <h3 className="font-semibold text-gray-900 mb-2">Sell With Trust</h3>
-              <p className="text-sm text-gray-600">Generate verified reports to prove your laptop's condition</p>
+              <p className="text-sm text-gray-600">Generate verified reports to prove your laptop&apos;s condition</p>
             </div>
-            
+           
             <div className="bg-white rounded-xl p-6 border text-center">
               <div className="text-3xl mb-3">🔧</div>
               <h3 className="font-semibold text-gray-900 mb-2">Maintain Better</h3>
@@ -214,6 +229,7 @@ export default function CheckTopPage() {
             </div>
           </div>
         </div>
+
 
         {/* System Requirements */}
         <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 text-white">
@@ -240,26 +256,27 @@ export default function CheckTopPage() {
           </div>
         </div>
 
+
         {/* FAQ Section */}
         <div className="mt-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-          
+         
           <div className="space-y-4">
             <div className="border rounded-lg p-4">
               <h3 className="font-semibold text-gray-900 mb-2">Is CheckTop really free?</h3>
               <p className="text-sm text-gray-600">Yes! CheckTop is completely free to use with no hidden costs or premium tiers.</p>
             </div>
-            
+           
             <div className="border rounded-lg p-4">
               <h3 className="font-semibold text-gray-900 mb-2">Does it send my data anywhere?</h3>
               <p className="text-sm text-gray-600">No. CheckTop runs completely offline. Your diagnostic data never leaves your computer.</p>
             </div>
-            
+           
             <div className="border rounded-lg p-4">
               <h3 className="font-semibold text-gray-900 mb-2">Can I use it on Mac or Linux?</h3>
               <p className="text-sm text-gray-600">Currently Windows only. Mac and Linux versions are in development.</p>
             </div>
-            
+           
             <div className="border rounded-lg p-4">
               <h3 className="font-semibold text-gray-900 mb-2">How accurate is the battery health check?</h3>
               <p className="text-sm text-gray-600">Very accurate. It reads the actual battery controller data including cycle count, design capacity, and current capacity.</p>
@@ -270,9 +287,9 @@ export default function CheckTopPage() {
         <div className="mt-8 text-center border-t pt-8">
           <p className="text-sm text-gray-500">
             Prefer the dedicated site? Visit{' '}
-            <a 
-              href="https://checktop-frontend.onrender.com" 
-              target="_blank" 
+            <a
+              href="https://checktop-frontend.onrender.com"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-[#4D0682] hover:underline"
             >
