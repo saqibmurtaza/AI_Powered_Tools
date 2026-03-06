@@ -280,9 +280,10 @@ export default function CheckTopPage() {
             </div>
           </div>
         </div>
+
         {/* Add near the bottom of your component */}
         <div className="mt-8 text-center border-t pt-8">
-          <p className="text-sm text-gray-500">
+          <p className="font-semibold text-sm text-gray-500">
             Prefer the dedicated site? Visit{' '}
             <a
               href="https://checktop-frontend.onrender.com"
@@ -294,6 +295,7 @@ export default function CheckTopPage() {
             </a>
           </p>
         </div>
+
       </main>
       <Footer />
     </div>
