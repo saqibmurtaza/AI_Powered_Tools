@@ -246,7 +246,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { ArrowLeft, Briefcase, Clock, FileText, ShieldCheck, TrendingUp, Sparkles, Loader2 } from 'lucide-react';
+import { ArrowLeft, Briefcase, Clock, ShieldCheck, TrendingUp, Sparkles, Loader2 } from 'lucide-react';
 
 export default function TenureCalculatorPage() {
   const [startDate, setStartDate] = useState('');
@@ -412,7 +412,7 @@ export default function TenureCalculatorPage() {
                       {isAiLoading ? (
                         <div className="flex justify-center py-2"><Loader2 className="w-5 h-5 animate-spin text-purple-600" /></div>
                       ) : (
-                        <p className="text-xs text-gray-600 italic leading-relaxed">"{aiInsight}"</p>
+                        <p className="text-xs text-gray-600 italic leading-relaxed">&quot;{aiInsight}&quot;</p>
                       )}
                     </div>
                   </div>
