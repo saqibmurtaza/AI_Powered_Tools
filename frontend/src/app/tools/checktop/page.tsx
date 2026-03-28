@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { ArrowLeft, Download, Battery, Cpu, HardDrive, Monitor, Headphones, Activity, CheckCircle, Shield, Wifi, Zap } from 'lucide-react';
+import { ArrowLeft, Download, Battery, Cpu, HardDrive, Monitor, Headphones, Activity, CheckCircle, Shield, Zap } from 'lucide-react';
 
 
 export default function CheckTopPage() {
@@ -301,3 +301,4 @@ export default function CheckTopPage() {
     </div>
   );
 }
+
