@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 
 export default function CRMAutomationPage() {
   const [formStatus, setFormStatus] = useState('idle');
@@ -70,12 +71,12 @@ export default function CRMAutomationPage() {
           
           {/* Header with back link matching your pattern */}
           <div className="mb-8">
-            <a 
-              href="/tools" 
+            <Link
+              href="/tools"
               className="text-blue-600 hover:text-blue-800 inline-flex items-center gap-2"
             >
               ← Back to all tools
-            </a>
+            </Link>
           </div>
 
           {/* Hero Section */}
@@ -287,7 +288,7 @@ export default function CRMAutomationPage() {
           <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 text-white text-center">
             <h2 className="text-3xl font-bold mb-4">Want This For Your Business?</h2>
             <p className="text-xl mb-6 opacity-90">
-              Stop manually entering leads. Let's connect your forms to your CRM.
+              Stop manually entering leads. Let&apos;s connect your forms to your CRM.
             </p>
             <a 
               href="/contact" 
@@ -301,3 +302,6 @@ export default function CRMAutomationPage() {
     </>
   );
 }
+
+
+

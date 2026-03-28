@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { ArrowLeft, Briefcase, Clock, FileText, ShieldCheck, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Briefcase, Clock, ShieldCheck, TrendingUp } from 'lucide-react';
 
 export default function TenureCalculatorPage() {
   const [startDate, setStartDate] = useState('');
@@ -238,4 +238,5 @@ export default function TenureCalculatorPage() {
     </div>
   );
 }
+
 
