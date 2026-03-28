@@ -7,9 +7,10 @@ import dynamic from 'next/dynamic';
 
 // Dynamically import tool components
 const toolComponents = {
-  agecalculator: dynamic(() => import('../tenure-calculator/page')),
+  tenurecalculator: dynamic(() => import('../tenure-calculator/page')),
   contextcards: dynamic(() => import('../contextcards/ClientPage')),
   checktop: dynamic(() => import('../checktop/page')),
+  'crm-automation': dynamic(() => import('../crm-automation/page')),
   // Add new tools here as they're built
 } as const;
 

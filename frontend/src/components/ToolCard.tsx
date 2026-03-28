@@ -24,7 +24,7 @@ export default function ToolCard({ icon: Icon, title, description, href }: Props
       </div>
       <div className="card-body">
         <h3 className="text-lg font-semibold mb-2">{title}</h3>
-        <p className="text-sm text-gray-600">{description}</p>
+        <p className="text-sm text-gray-600 whitespace-pre-line">{description}</p>
       </div>
     </a>
   );

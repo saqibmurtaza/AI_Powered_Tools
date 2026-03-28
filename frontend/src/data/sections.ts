@@ -9,7 +9,7 @@ export const siteData = {
         id: "contextcards",
         name: "MemorAI Cards",
         link: "/tools/contextcards", // ✅ Already correct
-        description: "Your Second Brain for Everything You Read — AI that captures, summarizes, and remembers what matters",
+        description: "MemorAI Cards are like digital sticky notes for your AI assistant.\nYou write down things that matter to you, like your goals, preferences, and what you are learning.\nThe AI reads them when you chat, so it remembers your context and helps you more naturally, like a helpful friend who never forgets.",
         icon: "🧩",
       },
       {
@@ -25,6 +25,13 @@ export const siteData = {
         link: "/tools/tenure-calculator", // ✅ Fixed: changed from "/tenure-calculator" to "/tools/tenure-calculator"
         description: "Determine exact service duration for HR analytics and career planning",
         icon: "🧮",
+      },
+      {
+        id: "crm-automation",
+        name: "CRM Automation",
+        link: "/tools/crm-automation",
+        description: "Automate customer relationship management tasks with AI-powered tools",
+        icon: "🤖",
       },
       // future tools: just add objects here and they appear across site.
       

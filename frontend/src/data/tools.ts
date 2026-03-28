@@ -37,6 +37,15 @@ export const tools: Tool[] = [
     category: "calculators",
     status: "active"
   },
+   {
+    id: 'crm-automation',
+    name: 'CRM Auto-Sync Demo',
+    description: 'Watch a form submission automatically create a contact in HubSpot CRM. Live automation demo.',
+    icon: '🔄',
+    category: 'automation',
+    href: '/tools/crm-automation',
+    status: 'active',
+  },
  
 // Add more tools here matching your current ones
 ];

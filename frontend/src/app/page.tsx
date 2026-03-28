@@ -74,7 +74,7 @@ export default function HomePage() {
 
                     <CardContent className="p-6 text-left">
                       <CardTitle className="text-lg text-black">{tool.name}</CardTitle>
-                      <CardDescription className="mt-2 text-sm text-gray-600">
+                      <CardDescription className="mt-2 text-sm text-gray-600 whitespace-pre-line">
                         {tool.description}
                       </CardDescription>
                     </CardContent>
@@ -129,7 +129,7 @@ export default function HomePage() {
 
                     <CardContent className="p-6 text-left">
                       <CardTitle className="text-lg text-black">{bot.name}</CardTitle>
-                      <CardDescription className="mt-2 text-sm text-gray-600">
+                      <CardDescription className="mt-2 text-sm text-gray-600 whitespace-pre-line">
                         {bot.description}
                       </CardDescription>
                       {/* Removed the "Visit Bot" link and arrow */}
@@ -146,3 +146,4 @@ export default function HomePage() {
     </div>
   );
 }
+
