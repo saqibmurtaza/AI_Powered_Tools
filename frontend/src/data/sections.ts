@@ -28,9 +28,9 @@ export const siteData = {
       },
       {
         id: "crm-automation",
-        name: "CRM Automation",
+        name: "CRM (Customer relationship management) Automation",
         link: "/tools/crm-automation",
-        description: "Automate customer relationship management tasks with AI-powered tools",
+        description: "Your AI-powered assistant for managing customers and leads.\nWhen someone fills out a form on your website, the information automatically goes straight into your CRM — no copying, no pasting, no mistakes. \nYour AI organizes everything, tags leads by interest, and even assigns follow-ups to the right person. Never lose track of a customer again. Just focus on growing your business.",
         icon: "🤖",
       },
       // future tools: just add objects here and they appear across site.
