@@ -73,7 +73,7 @@ export default function CRMAutomationPage() {
           <div className="mb-8">
             <Link
               href="/tools"
-              className="text-blue-600 hover:text-blue-800 inline-flex items-center gap-2"
+              className="text-black mb-4 inline-flex items-center gap-2"
             >
               ← Back to all tools
             </Link>
@@ -81,11 +81,11 @@ export default function CRMAutomationPage() {
 
           {/* Hero Section */}
           <div className="text-center mb-12">
-            <span className="bg-blue-100 text-blue-800 text-sm px-4 py-2 rounded-full font-medium">
+            <span className="bg-gradient-to-r from-[#4D0682] to-[#7C3AED] text-white text-sm px-4 py-2 rounded-full font-medium">
               🚀 Live Automation Demo
             </span>
             <h1 className="text-4xl md:text-5xl font-bold mt-6 mb-4">
-              Forms That <span className="text-blue-600">Auto-Fill Your CRM</span>
+              Forms That <span className="bg-gradient-to-r from-[#4D0682] to-[#7C3AED] bg-clip-text text-transparent">Auto-Fill Your CRM</span>
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Fill this form once. Watch it appear in HubSpot instantly. 
@@ -96,15 +96,15 @@ export default function CRMAutomationPage() {
           {/* Stats Cards */}
           <div className="grid grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto">
             <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-              <div className="text-2xl font-bold text-blue-600">{submissionCount}</div>
+              <div className="text-2xl font-bold text-[#4D0682]">{submissionCount}</div>
               <div className="text-sm text-gray-600">Demo Tests</div>
             </div>
             <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-              <div className="text-2xl font-bold text-blue-600">0</div>
+              <div className="text-2xl font-bold text-[#4D0682]">0</div>
               <div className="text-sm text-gray-600">Manual Entries</div>
             </div>
             <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-              <div className="text-2xl font-bold text-blue-600">⚡</div>
+              <div className="text-2xl font-bold text-[#4D0682]">⚡</div>
               <div className="text-sm text-gray-600">Instant Sync</div>
             </div>
           </div>
@@ -177,7 +177,7 @@ export default function CRMAutomationPage() {
                   <button
                     type="submit"
                     disabled={formStatus === 'submitting'}
-                    className="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-bold text-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors"
+                    className="w-full bg-gradient-to-r from-[#4D0682] to-[#7C3AED] text-white py-4 text-lg font-bold hover:opacity-90 transition-opacity"
                   >
                     {formStatus === 'submitting' ? (
                       <span className="flex items-center justify-center">
@@ -225,7 +225,7 @@ export default function CRMAutomationPage() {
                 
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <div className="bg-blue-100 text-blue-600 w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">1</div>
+                    <div className="bg-gradient-to-r from-[#4D0682] to-[#7C3AED] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">1</div>
                     <div>
                       <p className="font-medium">You fill this form</p>
                       <p className="text-sm text-gray-600">Just like your business forms</p>
@@ -233,7 +233,7 @@ export default function CRMAutomationPage() {
                   </div>
                   <div className="pl-3 text-gray-400">↓</div>
                   <div className="flex items-start gap-3">
-                    <div className="bg-blue-100 text-blue-600 w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">2</div>
+                    <div className="bg-gradient-to-r from-[#4D0682] to-[#7C3AED] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">2</div>
                     <div>
                       <p className="font-medium">n8n automation triggers</p>
                       <p className="text-sm text-gray-600">My workflow processes your data</p>
@@ -241,7 +241,7 @@ export default function CRMAutomationPage() {
                   </div>
                   <div className="pl-3 text-gray-400">↓</div>
                   <div className="flex items-start gap-3">
-                    <div className="bg-blue-100 text-blue-600 w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">3</div>
+                    <div className="bg-gradient-to-r from-[#4D0682] to-[#7C3AED] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">3</div>
                     <div>
                       <p className="font-medium">HubSpot API creates contact</p>
                       <p className="text-sm text-gray-600">Appears instantly - no manual entry</p>
@@ -255,7 +255,7 @@ export default function CRMAutomationPage() {
                       <div className="flex-1 h-4 bg-red-200 rounded-l-full flex items-center justify-start text-xs text-red-800 pl-2">
                         Manual: 5-10 mins
                       </div>
-                      <div className="flex-1 h-4 bg-green-500 rounded-r-full flex items-center justify-end text-xs text-white pr-2">
+                      <div className="flex-1 h-4 bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-r-full flex items-center justify-end text-xs text-white pr-2">
                         Auto: 0 sec
                       </div>
                     </div>
@@ -285,14 +285,14 @@ export default function CRMAutomationPage() {
           </div>
 
           {/* CTA Section - matches your site's style */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 text-white text-center">
+          <div className="bg-gradient-to-r from-[#4D0682] to-[#7C3AED] rounded-2xl p-8 text-white text-center">
             <h2 className="text-3xl font-bold mb-4">Want This For Your Business?</h2>
             <p className="text-xl mb-6 opacity-90">
               Stop manually entering leads. Let&apos;s connect your forms to your CRM.
             </p>
             <a 
               href="/contact" 
-              className="inline-block bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors"
+              className="inline-block bg-white text-[#4D0682] px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
             >
               Discuss Your Project →
             </a>
