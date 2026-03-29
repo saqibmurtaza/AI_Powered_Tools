@@ -207,7 +207,7 @@ export default function CRMAutomationPage() {
                 </h1>
                 <p className="mt-4 max-w-2xl text-lg leading-8 text-gray-600">
                   Submit a sample form and watch what happens next. See your data move through each step — from form submission, to organization, to appearing in your CRM. No mystery. No delays. Just a clear demonstration of how your information becomes a usable lead, ready for your team to act on.
-                  It takes seconds. It's transparent. It's real.
+                  It takes seconds. It&apos;s transparent. It&apos;s real.
                 </p>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-3">
